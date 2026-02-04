@@ -23,7 +23,7 @@ export default function BookPage() {
         <>
           <div className={styles.section}>
             <h3>Contact</h3>
-            <p><strong>Email:</strong> fcpenet@gmail.com</p>
+            <p><strong>Email:</strong> me@kikopenetrante.com</p>
             <p><strong>Phone:</strong> +63 917 512 3972</p>
             <p><strong>Location:</strong> Taguig City, PH</p>
           </div>

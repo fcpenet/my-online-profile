@@ -122,7 +122,7 @@ export default function Desktop() {
             <div className={styles.dockIcon}>🐍</div>
           </Link>
           <div className={styles.dockSeparator}></div>
-          <a href="mailto:fcpenet@gmail.com" className={styles.dockItem} title="Email">
+          <a href="mailto:me@kikopenetrante.com" className={styles.dockItem} title="Email">
             <div className={styles.dockIcon}>✉️</div>
           </a>
         </div>

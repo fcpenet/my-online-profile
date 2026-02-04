@@ -34,7 +34,7 @@ export default function Resume() {
                   <h2 className={styles.sidebarTitle}>Contact</h2>
                   <div className={styles.contactItem}>
                     <span className={styles.label}>Email</span>
-                    <a href="mailto:fcpenet@gmail.com" className={styles.link}>fcpenet@gmail.com</a>
+                    <a href="mailto:me@kikopenetrante.com" className={styles.link}>me@kikopenetrante.com</a>
                   </div>
                   <div className={styles.contactItem}>
                     <span className={styles.label}>Phone</span>

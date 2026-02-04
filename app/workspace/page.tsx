@@ -33,7 +33,7 @@ const App: React.FC = () => {
     name: "Francis Penetrante",
     role: "Senior Software Engineer",
     experience: 13,
-    email: "fcpenet@gmail.com",
+    email: "me@kikopenetrante.com",
     phone: "+63 917 512 3972",
     location: "Taguig City, PH"
   };
@@ -196,7 +196,7 @@ Airflow • BigQuery • Snowflake
 \`\`\`
 
 ### 📫 Contact
-- 📧 fcpenet@gmail.com
+- 📧 me@kikopenetrante.com
 - 📱 +63 917 512 3972
 - 📍 Taguig City, PH
 
@@ -362,7 +362,7 @@ _AI Specialization_
                     <div className={styles.appSection}>
                       <h3 className={styles.sectionTitle}>📫 Contact</h3>
                       <div className={styles.contactInfo}>
-                        <p>📧 fcpenet@gmail.com</p>
+                        <p>📧 me@kikopenetrante.com</p>
                         <p>📱 +63 917 512 3972</p>
                         <p>📍 Taguig City, PH</p>
                       </div>
