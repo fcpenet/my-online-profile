@@ -1,6 +1,6 @@
-# My Online Profile
+# Francis Penetrante - Online Profile
 
-A simple static website built with Next.js and TypeScript.
+A professional portfolio website built with Next.js and TypeScript, showcasing 13+ years of software engineering experience.
 
 ## Project Structure
 

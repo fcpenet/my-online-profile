@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'My Online Profile',
-  description: 'A simple static website built with Next.js',
+  title: 'Francis Penetrante - Senior Software Engineer',
+  description: 'Software Engineer with 13+ years of experience specializing in Full Stack Development, ReactJS, NodeJS, Python, and Cloud Technologies (GCP, AWS, Azure)',
 };
 
 export default function RootLayout({
