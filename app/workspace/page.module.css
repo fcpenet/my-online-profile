@@ -1,0 +1,438 @@
+.container {
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #1e1e1e;
+  position: relative;
+}
+
+.backLink {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  color: #569cd6;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s;
+  font-weight: 500;
+  border: 1px solid rgba(86, 156, 214, 0.3);
+}
+
+.backLink:hover {
+  background: rgba(86, 156, 214, 0.1);
+  border-color: rgba(86, 156, 214, 0.5);
+  transform: translateX(-4px);
+}
+
+.ide {
+  width: 100%;
+  max-width: 1600px;
+  height: 85vh;
+  background: #1e1e1e;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  margin-top: 4rem;
+}
+
+/* Top Bar */
+.topBar {
+  height: 35px;
+  background: #323233;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  border-bottom: 1px solid #1e1e1e;
+}
+
+.windowControls {
+  display: flex;
+  gap: 8px;
+  margin-right: 1rem;
+}
+
+.controlRed,
+.controlYellow,
+.controlGreen {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.controlRed {
+  background: #ff5f57;
+}
+
+.controlYellow {
+  background: #ffbd2e;
+}
+
+.controlGreen {
+  background: #28c840;
+}
+
+.ideTitle {
+  color: #cccccc;
+  font-size: 0.85rem;
+  flex: 1;
+  text-align: center;
+}
+
+/* IDE Content */
+.ideContent {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background: #252526;
+  border-right: 1px solid #1e1e1e;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarHeader {
+  padding: 0.75rem 1rem;
+  background: #1e1e1e;
+  color: #cccccc;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #1e1e1e;
+}
+
+.fileList {
+  padding: 0.5rem 0;
+  overflow-y: auto;
+}
+
+.fileItem {
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #cccccc;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 0.9rem;
+}
+
+.fileItem:hover {
+  background: #2a2d2e;
+}
+
+.activeFile {
+  background: #1e1e1e !important;
+  color: #ffffff;
+}
+
+.fileIcon {
+  font-size: 1rem;
+}
+
+.fileName {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+/* Editor Container */
+.editorContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  background: #1e1e1e;
+  border-bottom: 1px solid #1e1e1e;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #2d2d30;
+  color: #969696;
+  cursor: pointer;
+  border-right: 1px solid #1e1e1e;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: #cccccc;
+  background: #1e1e1e;
+}
+
+.activeTab {
+  background: #1e1e1e !important;
+  color: #ffffff !important;
+  border-top: 2px solid #569cd6;
+}
+
+/* Editor */
+.editor {
+  flex: 1;
+  overflow: auto;
+  background: #1e1e1e;
+  padding: 1rem;
+}
+
+.codeBlock {
+  margin: 0;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #d4d4d4;
+}
+
+.codeBlock code {
+  display: block;
+  white-space: pre;
+}
+
+/* Syntax Highlighting */
+.language-typescript .keyword,
+.language-json .string {
+  color: #569cd6;
+}
+
+.language-typescript .string {
+  color: #ce9178;
+}
+
+.language-typescript .number {
+  color: #b5cea8;
+}
+
+.language-typescript .comment {
+  color: #6a9955;
+  font-style: italic;
+}
+
+.language-python .string {
+  color: #ce9178;
+}
+
+.language-python .keyword {
+  color: #c586c0;
+}
+
+.language-python .comment {
+  color: #6a9955;
+  font-style: italic;
+}
+
+.language-markdown h1,
+.language-markdown h2,
+.language-markdown h3 {
+  color: #4ec9b0;
+}
+
+/* Terminal */
+.terminal {
+  height: 200px;
+  background: #181818;
+  border-top: 1px solid #1e1e1e;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminalHeader {
+  padding: 0.5rem 1rem;
+  background: #1e1e1e;
+  color: #cccccc;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-bottom: 1px solid #181818;
+}
+
+.terminalContent {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.85rem;
+}
+
+.terminalLine {
+  color: #cccccc;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.terminalLine:first-child {
+  color: #4ec9b0;
+}
+
+.terminalCursor {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.prompt {
+  color: #4ec9b0;
+  font-weight: bold;
+}
+
+.cursor {
+  color: #cccccc;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Status Bar */
+.statusBar {
+  height: 25px;
+  background: #007acc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  color: white;
+  font-size: 0.75rem;
+}
+
+.statusLeft,
+.statusRight {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.statusLeft span,
+.statusRight span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .ide {
+    height: 80vh;
+  }
+
+  .sidebar {
+    width: 200px;
+  }
+
+  .terminal {
+    height: 150px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .backLink {
+    top: 1rem;
+    left: 1rem;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .ide {
+    height: 75vh;
+    margin-top: 3rem;
+  }
+
+  .sidebar {
+    width: 60px;
+  }
+
+  .sidebarHeader {
+    font-size: 0.65rem;
+    padding: 0.5rem;
+  }
+
+  .fileName {
+    display: none;
+  }
+
+  .fileIcon {
+    font-size: 1.5rem;
+  }
+
+  .tabs {
+    overflow-x: auto;
+  }
+
+  .tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+  }
+
+  .editor {
+    padding: 0.5rem;
+  }
+
+  .codeBlock {
+    font-size: 0.75rem;
+  }
+
+  .terminal {
+    height: 120px;
+  }
+
+  .terminalContent {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .statusBar {
+    font-size: 0.65rem;
+  }
+
+  .statusLeft,
+  .statusRight {
+    gap: 0.5rem;
+  }
+
+  .statusRight {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .ide {
+    height: 70vh;
+  }
+
+  .tab span:last-child {
+    display: none;
+  }
+
+  .terminal {
+    height: 100px;
+  }
+}

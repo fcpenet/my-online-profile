@@ -1,0 +1,315 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import styles from './page.module.css';
+
+export default function WorkspacePage() {
+  const [activeFile, setActiveFile] = useState('experience.ts');
+  const [terminalOutput, setTerminalOutput] = useState<string[]>([
+    '$ whoami',
+    'Francis Penetrante - Senior Software Engineer',
+    '$ cat skills.json',
+    'Loading expertise...',
+  ]);
+
+  const files = {
+    'experience.ts': {
+      language: 'typescript',
+      content: `interface SoftwareEngineer {
+  name: string;
+  role: string;
+  experience: number;
+  specializations: string[];
+}
+
+const francis: SoftwareEngineer = {
+  name: "Francis Penetrante",
+  role: "Senior Software Engineer",
+  experience: 13, // years
+  specializations: [
+    "Full Stack Development",
+    "Data Engineering",
+    "Cloud Architecture",
+    "ETL Pipelines"
+  ]
+};
+
+// Current Position
+class CurrentRole {
+  company = "Eclaro / SPINS";
+  location = "Quezon City, PH";
+  duration = "Mar 2022 - Present";
+
+  achievements = {
+    performance: "75% reduction in processing time",
+    delivery: "90% on-time feature delivery",
+    automation: "Zero manual deployments",
+    mentorship: "3 developers onboarded"
+  };
+}
+
+export default francis;`
+    },
+    'skills.json': {
+      language: 'json',
+      content: `{
+  "languages": {
+    "primary": ["TypeScript", "JavaScript", "Python", "Kotlin"],
+    "familiar": ["Java", "Go", "SQL"]
+  },
+  "frontend": {
+    "frameworks": ["React", "Next.js", "Angular"],
+    "stateManagement": ["Redux", "NgRx", "Context API"],
+    "testing": ["Jest", "React Testing Library", "Cypress"]
+  },
+  "backend": {
+    "runtime": ["Node.js", "Python", "Spring Boot"],
+    "api": ["REST", "GraphQL", "Apollo Federation"],
+    "authentication": ["Auth0", "JWT", "OAuth"]
+  },
+  "cloud": {
+    "platforms": ["GCP", "AWS", "Azure"],
+    "services": [
+      "BigQuery",
+      "Composer/Airflow",
+      "Lambda",
+      "DynamoDB",
+      "CloudFront",
+      "S3"
+    ]
+  },
+  "dataEngineering": {
+    "etl": ["Apache Airflow", "Google Composer"],
+    "warehouses": ["BigQuery", "Snowflake"],
+    "orchestration": ["Airflow", "Cloud Composer"]
+  },
+  "devops": {
+    "ci_cd": ["CircleCI", "GitHub Actions", "Azure DevOps"],
+    "containers": ["Docker"],
+    "iac": ["Terraform"],
+    "monitoring": ["CloudWatch", "Datadog"]
+  }
+}`
+    },
+    'projects.py': {
+      language: 'python',
+      content: `"""
+Major Projects & Achievements
+Software Engineering Portfolio
+"""
+
+class ETLPipeline:
+    """
+    Optimized data ingestion pipeline
+    Achievement: 75% reduction in processing time
+    """
+    def __init__(self):
+        self.tools = ['Apache Airflow', 'BigQuery', 'Snowflake']
+        self.migration = 'GCP Workflow → Composer/Airflow'
+        self.result = '12h → 3h processing time'
+
+    def optimize(self):
+        """Implemented parallel processing and caching"""
+        return "Performance improved by 75%"
+
+
+class GraphQLFederation:
+    """
+    Deployed federated GraphQL architecture
+    with Apollo Federation and Auth0
+    """
+    security = 'Auth0 Integration'
+    architecture = 'Microservices'
+    gateway = 'Apollo Gateway'
+
+
+class CICDAutomation:
+    """
+    Automated deployment pipeline
+    Achievement: Zero manual deployments
+    """
+    def __init__(self):
+        self.tool = 'CircleCI'
+        self.apps = 4
+        self.environments = ['dev', 'staging', 'prod']
+        self.manual_deployments = 0  # eliminated!
+
+    def deploy(self, env: str):
+        """Automated deployment to any environment"""
+        print(f"🚀 Deploying to {env}...")
+        print("✓ Tests passed")
+        print("✓ Build successful")
+        print("✓ Deployment complete")
+
+
+# Testing Excellence
+TESTING_COVERAGE = 0.90  # 90% baseline
+TESTING_FRAMEWORK = 'React Testing Library'
+
+# Mentorship
+mentored_developers = 3
+technologies_taught = ['Python', 'ReactJS']
+onboarding_success_rate = 1.0  # 100%`
+    },
+    'README.md': {
+      language: 'markdown',
+      content: `# Francis Penetrante
+## Senior Software Engineer
+
+### 🎯 Professional Summary
+Results-driven Software Engineer with **13 years** of progressive
+experience in the IT industry. Specialized in full-stack development
+with ReactJS and NodeJS, complemented by deep expertise in cloud
+platforms and modern data engineering.
+
+### 🏆 Key Achievements
+- ⚡ **75%** reduction in data processing time through optimization
+- 📊 **90%** on-time feature delivery rate with XP methodology
+- 🚀 **Zero** manual deployments after CI/CD automation
+- 👨‍💻 **13+** years of professional software engineering experience
+
+### 💼 Current Position
+**Senior Software Engineer** at Eclaro / SPINS
+📍 Quezon City | 📅 Mar 2022 - Present
+
+### 🛠️ Core Technologies
+\`\`\`
+React • Node.js • TypeScript • Python
+GCP • AWS • Azure • Docker • Terraform
+Airflow • BigQuery • Snowflake
+\`\`\`
+
+### 📫 Contact
+- 📧 fcpenet@gmail.com
+- 📱 +63 917 512 3972
+- 📍 Taguig City, PH
+
+### 🎓 Education
+**M.S. Computer Science** - Mapua University (2017 - Present)
+_AI Specialization_
+
+**B.S. Computer Engineering** - Mapua Institute of Technology (2011)
+
+---
+⭐ Passionate about emerging technologies and continuous learning`
+    }
+  };
+
+  const fileIcons: { [key: string]: string } = {
+    ts: '📘',
+    json: '📋',
+    py: '🐍',
+    md: '📝'
+  };
+
+  const getFileIcon = (filename: string) => {
+    const ext = filename.split('.').pop() || '';
+    return fileIcons[ext] || '📄';
+  };
+
+  const fileList = Object.keys(files);
+
+  return (
+    <div className={styles.container}>
+      <Link href="/" className={styles.backLink}>← Back to Resume</Link>
+
+      <div className={styles.ide}>
+        {/* Top Bar */}
+        <div className={styles.topBar}>
+          <div className={styles.windowControls}>
+            <span className={styles.controlRed}></span>
+            <span className={styles.controlYellow}></span>
+            <span className={styles.controlGreen}></span>
+          </div>
+          <div className={styles.ideTitle}>
+            Francis Penetrante - Senior Software Engineer - Workspace
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className={styles.ideContent}>
+          {/* Sidebar */}
+          <div className={styles.sidebar}>
+            <div className={styles.sidebarHeader}>
+              <span>📁 PORTFOLIO</span>
+            </div>
+            <div className={styles.fileList}>
+              {fileList.map((file) => (
+                <div
+                  key={file}
+                  className={`${styles.fileItem} ${
+                    activeFile === file ? styles.activeFile : ''
+                  }`}
+                  onClick={() => setActiveFile(file)}
+                >
+                  <span className={styles.fileIcon}>{getFileIcon(file)}</span>
+                  <span className={styles.fileName}>{file}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Editor */}
+          <div className={styles.editorContainer}>
+            {/* Tabs */}
+            <div className={styles.tabs}>
+              {fileList.map((file) => (
+                <div
+                  key={file}
+                  className={`${styles.tab} ${
+                    activeFile === file ? styles.activeTab : ''
+                  }`}
+                  onClick={() => setActiveFile(file)}
+                >
+                  <span>{getFileIcon(file)}</span>
+                  <span>{file}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Code Editor */}
+            <div className={styles.editor}>
+              <pre className={styles.codeBlock}>
+                <code className={`language-${files[activeFile as keyof typeof files].language}`}>
+                  {files[activeFile as keyof typeof files].content}
+                </code>
+              </pre>
+            </div>
+
+            {/* Terminal */}
+            <div className={styles.terminal}>
+              <div className={styles.terminalHeader}>
+                <span>⚡ TERMINAL</span>
+              </div>
+              <div className={styles.terminalContent}>
+                {terminalOutput.map((line, index) => (
+                  <div key={index} className={styles.terminalLine}>
+                    {line}
+                  </div>
+                ))}
+                <div className={styles.terminalCursor}>
+                  <span className={styles.prompt}>$</span>
+                  <span className={styles.cursor}>_</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Status Bar */}
+        <div className={styles.statusBar}>
+          <div className={styles.statusLeft}>
+            <span>⚡ Ready</span>
+            <span>🔧 {files[activeFile as keyof typeof files].language}</span>
+            <span>✓ No Problems</span>
+          </div>
+          <div className={styles.statusRight}>
+            <span>13+ Years Experience</span>
+            <span>Senior Software Engineer</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

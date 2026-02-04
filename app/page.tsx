@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styles from './page.module.css';
 
 export default function Home() {
@@ -9,6 +10,10 @@ export default function Home() {
           <h1 className={styles.name}>Francis Penetrante</h1>
           <p className={styles.title}>Senior Software Engineer</p>
           <p className={styles.subtitle}>Full Stack Developer • Data Engineering Specialist</p>
+          <div className={styles.viewLinks}>
+            <Link href="/book" className={styles.viewLink}>View as Book 📖</Link>
+            <Link href="/workspace" className={styles.viewLink}>View Workspace 💻</Link>
+          </div>
         </header>
 
         <div className={styles.content}>
