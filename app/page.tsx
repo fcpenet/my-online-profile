@@ -13,6 +13,7 @@ export default function Home() {
           <div className={styles.viewLinks}>
             <Link href="/book" className={styles.viewLink}>View as Book 📖</Link>
             <Link href="/workspace" className={styles.viewLink}>View Workspace 💻</Link>
+            <Link href="/game" className={styles.viewLink}>Play Snake 🐍</Link>
           </div>
         </header>
 
