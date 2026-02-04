@@ -63,6 +63,26 @@ export default function Desktop() {
         </div>
       </div>
 
+      {/* Post-it Notes */}
+      <div className={styles.postItContainer}>
+        <div className={`${styles.postIt} ${styles.postItYellow}`} style={{ transform: 'rotate(-2deg)' }}>
+          <div className={styles.postItMetric}>75%</div>
+          <div className={styles.postItText}>Reduction in data processing time</div>
+        </div>
+        <div className={`${styles.postIt} ${styles.postItPink}`} style={{ transform: 'rotate(3deg)' }}>
+          <div className={styles.postItMetric}>90%</div>
+          <div className={styles.postItText}>On-time feature delivery rate</div>
+        </div>
+        <div className={`${styles.postIt} ${styles.postItBlue}`} style={{ transform: 'rotate(-1deg)' }}>
+          <div className={styles.postItMetric}>Zero</div>
+          <div className={styles.postItText}>Manual deployments</div>
+        </div>
+        <div className={`${styles.postIt} ${styles.postItGreen}`} style={{ transform: 'rotate(2deg)' }}>
+          <div className={styles.postItMetric}>13+</div>
+          <div className={styles.postItText}>Years of experience</div>
+        </div>
+      </div>
+
       {/* Desktop Icons */}
       <div className={styles.iconsContainer}>
         <Link href="/resume" className={styles.iconWrapper}>
