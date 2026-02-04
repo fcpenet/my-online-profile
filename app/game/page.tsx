@@ -18,7 +18,6 @@ export default function Game() {
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   const generateFood = useCallback((currentSnake: Position[]): Position => {
     let newFood: Position;
@@ -140,112 +139,110 @@ export default function Game() {
 
   return (
     <div className={styles.container}>
-      {/* Hamburger Menu */}
-      <div className={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-
-      {menuOpen && (
-        <>
-          <div className={styles.menuOverlay} onClick={() => setMenuOpen(false)}></div>
-          <div className={styles.menu}>
-            <Link href="/" className={styles.menuItem}>← Back to Resume</Link>
-            <Link href="/book" className={styles.menuItem}>📖 Book View</Link>
-            <Link href="/workspace" className={styles.menuItem}>💻 Workspace</Link>
+      <div className={styles.appWindow}>
+        {/* Window Header */}
+        <div className={styles.windowHeader}>
+          <div className={styles.windowButtons}>
+            <Link href="/" className={`${styles.windowButton} ${styles.closeButton}`} title="Close"></Link>
+            <span className={`${styles.windowButton} ${styles.minimizeButton}`}></span>
+            <span className={`${styles.windowButton} ${styles.maximizeButton}`}></span>
           </div>
-        </>
-      )}
-
-      <div className={styles.gameWrapper}>
-        <h1 className={styles.title}>🐍 Snake Game</h1>
-
-        <div className={styles.scoreBoard}>
-          <div className={styles.score}>Score: {score}</div>
-          <div className={styles.highScore}>High Score: {highScore}</div>
+          <span className={styles.windowTitle}>Snake.app</span>
+          <div className={styles.windowButtonsPlaceholder}></div>
         </div>
 
-        <div className={styles.gameContainer}>
-          <div className={styles.grid}>
-            {Array.from({ length: GRID_SIZE * GRID_SIZE }).map((_, index) => {
-              const x = index % GRID_SIZE;
-              const y = Math.floor(index / GRID_SIZE);
-              const isSnake = snake.some(segment => segment.x === x && segment.y === y);
-              const isHead = snake[0].x === x && snake[0].y === y;
-              const isFood = food.x === x && food.y === y;
+        {/* Game Content */}
+        <div className={styles.windowContent}>
+          <div className={styles.gameWrapper}>
+            <h1 className={styles.title}>Snake Game</h1>
 
-              return (
-                <div
-                  key={index}
-                  className={`${styles.cell} ${isSnake ? styles.snake : ''} ${isHead ? styles.head : ''} ${isFood ? styles.food : ''}`}
-                />
-              );
-            })}
-          </div>
-
-          {!isPlaying && !gameOver && (
-            <div className={styles.overlay}>
-              <div className={styles.message}>
-                <h2>Ready to Play?</h2>
-                <p>Use arrow keys to control the snake</p>
-                <button className={styles.startButton} onClick={resetGame}>
-                  Start Game
-                </button>
-                <p className={styles.hint}>or press Space</p>
-              </div>
+            <div className={styles.scoreBoard}>
+              <div className={styles.score}>Score: {score}</div>
+              <div className={styles.highScore}>High Score: {highScore}</div>
             </div>
-          )}
 
-          {gameOver && (
-            <div className={styles.overlay}>
-              <div className={styles.message}>
-                <h2>Game Over!</h2>
-                <p>Your score: {score}</p>
-                {score === highScore && score > 0 && (
-                  <p className={styles.newRecord}>🎉 New High Score!</p>
-                )}
-                <button className={styles.startButton} onClick={resetGame}>
-                  Play Again
-                </button>
-                <p className={styles.hint}>or press Space</p>
+            <div className={styles.gameContainer}>
+              <div className={styles.grid}>
+                {Array.from({ length: GRID_SIZE * GRID_SIZE }).map((_, index) => {
+                  const x = index % GRID_SIZE;
+                  const y = Math.floor(index / GRID_SIZE);
+                  const isSnake = snake.some(segment => segment.x === x && segment.y === y);
+                  const isHead = snake[0].x === x && snake[0].y === y;
+                  const isFood = food.x === x && food.y === y;
+
+                  return (
+                    <div
+                      key={index}
+                      className={`${styles.cell} ${isSnake ? styles.snake : ''} ${isHead ? styles.head : ''} ${isFood ? styles.food : ''}`}
+                    />
+                  );
+                })}
               </div>
+
+              {!isPlaying && !gameOver && (
+                <div className={styles.overlay}>
+                  <div className={styles.message}>
+                    <h2>Ready to Play?</h2>
+                    <p>Use arrow keys to control the snake</p>
+                    <button className={styles.startButton} onClick={resetGame}>
+                      Start Game
+                    </button>
+                    <p className={styles.hint}>or press Space</p>
+                  </div>
+                </div>
+              )}
+
+              {gameOver && (
+                <div className={styles.overlay}>
+                  <div className={styles.message}>
+                    <h2>Game Over!</h2>
+                    <p>Your score: {score}</p>
+                    {score === highScore && score > 0 && (
+                      <p className={styles.newRecord}>New High Score!</p>
+                    )}
+                    <button className={styles.startButton} onClick={resetGame}>
+                      Play Again
+                    </button>
+                    <p className={styles.hint}>or press Space</p>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        <div className={styles.controls}>
-          <p>Use <span className={styles.key}>↑</span> <span className={styles.key}>↓</span> <span className={styles.key}>←</span> <span className={styles.key}>→</span> to move</p>
-        </div>
+            <div className={styles.controls}>
+              <p>Use <span className={styles.key}>↑</span> <span className={styles.key}>↓</span> <span className={styles.key}>←</span> <span className={styles.key}>→</span> to move</p>
+            </div>
 
-        {/* Mobile Controls */}
-        <div className={styles.mobileControls}>
-          <button
-            className={styles.controlButton}
-            onClick={() => direction !== 'DOWN' && setDirection('UP')}
-          >
-            ↑
-          </button>
-          <div className={styles.controlRow}>
-            <button
-              className={styles.controlButton}
-              onClick={() => direction !== 'RIGHT' && setDirection('LEFT')}
-            >
-              ←
-            </button>
-            <button
-              className={styles.controlButton}
-              onClick={() => direction !== 'LEFT' && setDirection('RIGHT')}
-            >
-              →
-            </button>
+            {/* Mobile Controls */}
+            <div className={styles.mobileControls}>
+              <button
+                className={styles.controlButton}
+                onClick={() => direction !== 'DOWN' && setDirection('UP')}
+              >
+                ↑
+              </button>
+              <div className={styles.controlRow}>
+                <button
+                  className={styles.controlButton}
+                  onClick={() => direction !== 'RIGHT' && setDirection('LEFT')}
+                >
+                  ←
+                </button>
+                <button
+                  className={styles.controlButton}
+                  onClick={() => direction !== 'LEFT' && setDirection('RIGHT')}
+                >
+                  →
+                </button>
+              </div>
+              <button
+                className={styles.controlButton}
+                onClick={() => direction !== 'UP' && setDirection('DOWN')}
+              >
+                ↓
+              </button>
+            </div>
           </div>
-          <button
-            className={styles.controlButton}
-            onClick={() => direction !== 'UP' && setDirection('DOWN')}
-          >
-            ↓
-          </button>
         </div>
       </div>
     </div>

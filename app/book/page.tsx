@@ -6,7 +6,6 @@ import styles from './page.module.css';
 
 export default function BookPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
 
   const pages = [
@@ -195,23 +194,6 @@ export default function BookPage() {
 
   return (
     <div className={styles.container}>
-      {/* Hamburger Menu */}
-      <div className={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-
-      {/* Menu Overlay */}
-      {menuOpen && (
-        <>
-          <div className={styles.menuOverlay} onClick={() => setMenuOpen(false)}></div>
-          <div className={styles.menu}>
-            <Link href="/" className={styles.menuItem}>← Back to Resume</Link>
-          </div>
-        </>
-      )}
-
       {!isOpen ? (
         <div className={styles.closedBookWrapper} onClick={() => setIsOpen(true)}>
           <div className={styles.closedBook}>

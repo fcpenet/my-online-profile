@@ -8,80 +8,88 @@
   position: relative;
 }
 
-/* Hamburger Menu */
-.hamburger {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  width: 30px;
-  height: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  z-index: 1001;
+/* Mac App Window */
+.appWindow {
+  background: #0f0f23;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+  animation: windowOpen 0.3s ease-out;
 }
 
-.hamburger span {
-  display: block;
-  height: 3px;
-  width: 100%;
-  background: #4ade80;
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-.hamburger:hover span {
-  background: #22c55e;
-}
-
-.menuOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 998;
-}
-
-.menu {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 180px;
-  height: 100vh;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  border-left: 2px solid #4ade80;
-  z-index: 1000;
-  padding: 4rem 1rem 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
+@keyframes windowOpen {
   from {
-    transform: translateX(100%);
+    opacity: 0;
+    transform: scale(0.95);
   }
   to {
-    transform: translateX(0);
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
-.menuItem {
-  color: #e2e8f0;
-  text-decoration: none;
-  padding: 0.75rem 0.5rem;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  font-size: 0.9rem;
+.windowHeader {
+  height: 38px;
+  background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-.menuItem:hover {
-  background: rgba(74, 222, 128, 0.2);
-  color: #4ade80;
+.windowButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.windowButton {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: block;
+}
+
+.closeButton {
+  background: #ff5f57;
+}
+
+.closeButton:hover {
+  background: #ff3b30;
+  box-shadow: 0 0 8px rgba(255, 59, 48, 0.6);
+}
+
+.minimizeButton {
+  background: #febc2e;
+}
+
+.minimizeButton:hover {
+  background: #f5a623;
+}
+
+.maximizeButton {
+  background: #28c840;
+}
+
+.maximizeButton:hover {
+  background: #1db954;
+}
+
+.windowButtonsPlaceholder {
+  width: 52px;
+}
+
+.windowTitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.windowContent {
+  padding: 1.5rem;
 }
 
 /* Game Wrapper */
@@ -93,7 +101,7 @@
 }
 
 .title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: #4ade80;
   text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
   margin: 0;
@@ -282,7 +290,13 @@
 /* Responsive */
 @media (max-width: 768px) {
   .container {
-    padding: 1rem;
+    padding: 0;
+  }
+
+  .appWindow {
+    border-radius: 0;
+    min-height: 100vh;
+    width: 100%;
   }
 
   .title {
@@ -305,16 +319,6 @@
 
   .mobileControls {
     display: flex;
-  }
-
-  .menu {
-    width: 160px;
-    padding: 3.5rem 0.75rem 1.5rem;
-  }
-
-  .menuItem {
-    font-size: 0.85rem;
-    padding: 0.6rem 0.4rem;
   }
 }
 

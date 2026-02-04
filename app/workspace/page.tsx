@@ -6,7 +6,6 @@ import styles from './page.module.css';
 
 export default function WorkspacePage() {
   const [activeFile, setActiveFile] = useState('App.tsx');
-  const [menuOpen, setMenuOpen] = useState(false);
   const [terminalOutput, setTerminalOutput] = useState<string[]>([
     '$ npm start',
     'Compiled successfully!',
@@ -228,28 +227,11 @@ _AI Specialization_
 
   return (
     <div className={styles.container}>
-      {/* Hamburger Menu */}
-      <div className={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-
-      {/* Menu Overlay */}
-      {menuOpen && (
-        <>
-          <div className={styles.menuOverlay} onClick={() => setMenuOpen(false)}></div>
-          <div className={styles.menu}>
-            <Link href="/" className={styles.menuItem}>← Back to Resume</Link>
-          </div>
-        </>
-      )}
-
       <div className={styles.ide}>
         {/* Top Bar */}
         <div className={styles.topBar}>
           <div className={styles.windowControls}>
-            <span className={styles.controlRed}></span>
+            <Link href="/" className={styles.controlRed} title="Close"></Link>
             <span className={styles.controlYellow}></span>
             <span className={styles.controlGreen}></span>
           </div>
