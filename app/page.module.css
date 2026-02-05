@@ -370,18 +370,24 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .desktop {
+    overflow: auto;
+    min-height: 100vh;
+    padding-bottom: 100px;
+  }
+
   .postItContainer {
     position: static;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
     max-width: 100%;
-    padding: 60px 1rem 1rem;
+    padding: 48px 1rem 1rem;
+    margin: 0 auto;
   }
 
   .postIt {
-    width: 140px;
+    width: 100%;
     min-height: 100px;
     padding: 0.75rem;
   }
@@ -399,7 +405,7 @@
     flex-direction: row;
     justify-content: center;
     gap: 1.5rem;
-    padding: 1rem;
+    padding: 1.5rem 1rem;
   }
 
   .icon {
@@ -409,6 +415,11 @@
 
   .iconEmoji {
     font-size: 2rem;
+  }
+
+  .vscodeIcon {
+    width: 2rem;
+    height: 2rem;
   }
 
   .iconLabel {
@@ -432,33 +443,84 @@
     font-size: 1rem;
   }
 
+  .dock {
+    bottom: 8px;
+  }
+
   .dockIcon {
     width: 45px;
     height: 45px;
     font-size: 1.75rem;
   }
 
+  .dockIconVscode .vscodeIcon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
   .menuLeft .menuItem:not(:first-child) {
     display: none;
+  }
+
+  .menuRight {
+    gap: 0.5rem;
+  }
+
+  .menuIcon {
+    font-size: 0.8rem;
+  }
+
+  .dateTime {
+    gap: 0.5rem;
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
   .menuBar {
     padding: 0 0.75rem;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+  }
+
+  .postItContainer {
+    padding: 44px 0.75rem 1rem;
+    gap: 0.5rem;
+  }
+
+  .postIt {
+    min-height: 90px;
+    padding: 0.5rem;
+  }
+
+  .postItMetric {
+    font-size: 1.25rem;
+  }
+
+  .postItText {
+    font-size: 0.65rem;
   }
 
   .iconsContainer {
-    flex-direction: row;
-    flex-wrap: wrap;
-    top: 50px;
-    right: auto;
-    left: 50%;
-    transform: translateX(-50%);
-    justify-content: center;
-    width: 100%;
-    padding: 0 1rem;
+    gap: 1rem;
+    padding: 1rem 0.5rem;
+  }
+
+  .icon {
+    width: 55px;
+    height: 55px;
+  }
+
+  .iconEmoji {
+    font-size: 1.75rem;
+  }
+
+  .vscodeIcon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .iconLabel {
+    font-size: 0.7rem;
   }
 
   .window {
@@ -476,7 +538,23 @@
     font-size: 1.5rem;
   }
 
+  .dockIconVscode .vscodeIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
   .dockSeparator {
     height: 30px;
+  }
+}
+
+@media (max-width: 360px) {
+  .postItContainer {
+    grid-template-columns: 1fr;
+    max-width: 200px;
+  }
+
+  .postIt {
+    width: 100%;
   }
 }
