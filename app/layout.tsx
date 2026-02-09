@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     siteName: 'kikOS',
     images: [
       {
-        url: '/api/og',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'kikOS Boot Screen',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'kikOS - Francis Penetrante Portfolio',
     description: 'An interactive portfolio experience with a terminal boot sequence and guided tour.',
-    images: ['/api/og'],
+    images: ['/og-image.png'],
   },
 };
 
