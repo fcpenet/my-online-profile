@@ -18,6 +18,18 @@ const VSCodeIcon = () => (
   </svg>
 );
 
+const ChromeIcon = () => (
+  <svg viewBox="0 0 100 100" className={styles.chromeIcon}>
+    <circle cx="50" cy="50" r="45" fill="#fff"/>
+    <circle cx="50" cy="50" r="40" fill="#4285F4"/>
+    <circle cx="50" cy="50" r="30" fill="#fff"/>
+    <circle cx="50" cy="50" r="20" fill="#4285F4"/>
+    <path d="M50 10 L50 45 L15 20 Z" fill="#EA4335"/>
+    <path d="M50 45 L85 20 L70 50 Z" fill="#FBBC04"/>
+    <path d="M50 45 L70 50 L30 80 Z" fill="#34A853"/>
+  </svg>
+);
+
 export default function Desktop() {
   const [time, setTime] = useState<string>('');
   const [date, setDate] = useState<string>('');
@@ -125,6 +137,13 @@ export default function Desktop() {
           <span className={styles.iconLabel}>Workspace</span>
         </Link>
 
+        <Link href="/projects" className={styles.iconWrapper}>
+          <div className={styles.icon} style={{ background: 'linear-gradient(135deg, #4285F422, #4285F444)' }}>
+            <ChromeIcon />
+          </div>
+          <span className={styles.iconLabel}>Projects</span>
+        </Link>
+
         <Link href="/game" className={styles.iconWrapper}>
           <div className={styles.icon} style={{ background: 'linear-gradient(135deg, #22c55e22, #22c55e44)' }}>
             <span className={styles.iconEmoji}>🐍</span>
@@ -142,6 +161,11 @@ export default function Desktop() {
           <Link href="/workspace" className={styles.dockItem} title="Workspace">
             <div className={`${styles.dockIcon} ${styles.dockIconVscode}`}>
               <VSCodeIcon />
+            </div>
+          </Link>
+          <Link href="/projects" className={styles.dockItem} title="Projects">
+            <div className={`${styles.dockIcon} ${styles.dockIconChrome}`}>
+              <ChromeIcon />
             </div>
           </Link>
           <Link href="/game" className={styles.dockItem} title="Snake Game">

@@ -187,6 +187,11 @@
   height: 2.5rem;
 }
 
+.chromeIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
 .iconLabel {
   color: white;
   font-size: 0.8rem;
@@ -361,6 +366,15 @@
   height: 2rem;
 }
 
+.dockIconChrome {
+  padding: 0;
+}
+
+.dockIconChrome .chromeIcon {
+  width: 2rem;
+  height: 2rem;
+}
+
 .dockSeparator {
   width: 1px;
   height: 40px;
@@ -512,6 +526,11 @@
     height: 2rem;
   }
 
+  .chromeIcon {
+    width: 2rem;
+    height: 2rem;
+  }
+
   .iconLabel {
     font-size: 0.75rem;
   }
@@ -544,6 +563,11 @@
   }
 
   .dockIconVscode .vscodeIcon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .dockIconChrome .chromeIcon {
     width: 1.75rem;
     height: 1.75rem;
   }
@@ -627,6 +651,11 @@
     height: 1.75rem;
   }
 
+  .chromeIcon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
   .iconLabel {
     font-size: 0.7rem;
   }
@@ -647,6 +676,11 @@
   }
 
   .dockIconVscode .vscodeIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .dockIconChrome .chromeIcon {
     width: 1.5rem;
     height: 1.5rem;
   }
