@@ -88,8 +88,19 @@
   font-weight: 600;
 }
 
-.tourControlsPlaceholder {
-  width: 52px;
+.tourSkipButton {
+  background: none;
+  border: none;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.tourSkipButton:hover {
+  color: rgba(0, 0, 0, 0.75);
 }
 
 .tourContent {
@@ -163,7 +174,7 @@
 }
 
 .tourButton,
-.tourButtonSkip {
+.tourButtonPrevious {
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-size: 0.95rem;
@@ -176,7 +187,7 @@
 .tourButton {
   background: #007AFF;
   color: white;
-  flex: 1;
+  flex: 2;
 }
 
 .tourButton:hover:not(:disabled) {
@@ -190,14 +201,19 @@
   cursor: not-allowed;
 }
 
-.tourButtonSkip {
+.tourButtonPrevious {
   background: rgba(0, 0, 0, 0.05);
   color: #475569;
   flex: 1;
 }
 
-.tourButtonSkip:hover {
+.tourButtonPrevious:hover:not(:disabled) {
   background: rgba(0, 0, 0, 0.1);
+}
+
+.tourButtonPrevious:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
 @media (max-width: 768px) {

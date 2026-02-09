@@ -73,7 +73,12 @@ export default function WelcomeTour({ isVisible, onClose }: WelcomeTourProps) {
             <span className={styles.tourControlGreen}></span>
           </div>
           <div className={styles.tourTitle}>Welcome Tour</div>
-          <div className={styles.tourControlsPlaceholder}></div>
+          <button
+            className={styles.tourSkipButton}
+            onClick={handleSkipTour}
+          >
+            Skip Tour
+          </button>
         </div>
         <div className={styles.tourContent}>
           <div className={styles.tourSlide}>
@@ -91,17 +96,11 @@ export default function WelcomeTour({ isVisible, onClose }: WelcomeTourProps) {
           </div>
           <div className={styles.tourNavigation}>
             <button
-              className={styles.tourButton}
+              className={styles.tourButtonPrevious}
               onClick={handlePrevSlide}
               disabled={currentSlide === 0}
             >
-              Previous
-            </button>
-            <button
-              className={styles.tourButtonSkip}
-              onClick={handleSkipTour}
-            >
-              Skip Tour
+              ← Previous
             </button>
             <button
               className={styles.tourButton}
