@@ -104,6 +104,13 @@ export default function ProjectsPage() {
               <span className={styles.tabFavicon}>🌐</span>
               <span>Pili Pinas</span>
             </div>
+            <div
+              className={`${styles.tab} ${activeTab === 'cocina-express' ? styles.activeTab : styles.inactiveTab}`}
+              onClick={() => setActiveTab('cocina-express')}
+            >
+              <span className={styles.tabFavicon}>🍳</span>
+              <span>Cocina Express</span>
+            </div>
             <div className={styles.newTab}>+</div>
           </div>
         </div>
@@ -118,7 +125,7 @@ export default function ProjectsPage() {
           <div className={styles.urlBar}>
             <span className={styles.secure}>🔒</span>
             <span className={styles.url}>
-              {activeTab === 'summary' ? 'kikopenetrante.com/projects' : 'pili-pinas.com'}
+              {activeTab === 'summary' ? 'kikopenetrante.com/projects' : activeTab === 'pili-pinas' ? 'pili-pinas.com' : 'fcpenet.github.io/cocina-express'}
             </span>
           </div>
           <div className={styles.browserActions}>
@@ -200,7 +207,7 @@ export default function ProjectsPage() {
                 </div>
               </div>
             </>
-          ) : (
+          ) : activeTab === 'pili-pinas' ? (
             <div className={styles.iframeContainer}>
               <iframe
                 src="https://pili-pinas.com"
@@ -215,6 +222,16 @@ export default function ProjectsPage() {
                   Open pili-pinas.com in new tab →
                 </a>
               </div>
+            </div>
+          ) : (
+            <div className={styles.iframeContainer}>
+              <iframe
+                src="https://fcpenet.github.io/cocina-express/"
+                className={styles.iframe}
+                title="Cocina Express"
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                loading="lazy"
+              />
             </div>
           )}
         </div>
