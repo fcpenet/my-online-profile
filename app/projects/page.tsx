@@ -91,7 +91,7 @@ export default function ProjectsPage() {
           <div className={styles.tabs}>
             <div className={styles.tab}>
               <ChromeIcon />
-              <span>Projects - Francis Penetrante</span>
+              <span>Summary</span>
             </div>
             <div className={styles.newTab}>+</div>
           </div>
