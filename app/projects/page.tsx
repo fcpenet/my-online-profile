@@ -26,6 +26,7 @@ interface Project {
 
 export default function ProjectsPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [activeTab, setActiveTab] = useState('summary');
 
   const projects: Project[] = [
     {
@@ -89,9 +90,19 @@ export default function ProjectsPage() {
             <span className={styles.controlGreen}></span>
           </div>
           <div className={styles.tabs}>
-            <div className={styles.tab}>
+            <div
+              className={`${styles.tab} ${activeTab === 'summary' ? styles.activeTab : styles.inactiveTab}`}
+              onClick={() => setActiveTab('summary')}
+            >
               <ChromeIcon />
               <span>Summary</span>
+            </div>
+            <div
+              className={`${styles.tab} ${activeTab === 'pili-pinas' ? styles.activeTab : styles.inactiveTab}`}
+              onClick={() => setActiveTab('pili-pinas')}
+            >
+              <span className={styles.tabFavicon}>🌐</span>
+              <span>Pili Pinas</span>
             </div>
             <div className={styles.newTab}>+</div>
           </div>
@@ -106,7 +117,9 @@ export default function ProjectsPage() {
           </div>
           <div className={styles.urlBar}>
             <span className={styles.secure}>🔒</span>
-            <span className={styles.url}>kikopenetrante.com/projects</span>
+            <span className={styles.url}>
+              {activeTab === 'summary' ? 'kikopenetrante.com/projects' : 'pili-pinas.com'}
+            </span>
           </div>
           <div className={styles.browserActions}>
             <span>⭐</span>
@@ -116,74 +129,94 @@ export default function ProjectsPage() {
 
         {/* Browser Content */}
         <div className={styles.browserContent}>
-          <div className={styles.header}>
-            <div className={styles.headerContent}>
-              <h1 className={styles.title}>My Projects</h1>
-              <p className={styles.subtitle}>
-                A showcase of professional projects and technical achievements
-              </p>
-            </div>
-          </div>
-
-          {/* Category Filter */}
-          <div className={styles.filterBar}>
-            {categories.map(category => (
-              <button
-                key={category}
-                className={`${styles.filterBtn} ${selectedCategory === category ? styles.active : ''}`}
-                onClick={() => setSelectedCategory(category)}
-              >
-                {category === 'all' ? 'All Projects' : category}
-              </button>
-            ))}
-          </div>
-
-          {/* Projects Grid */}
-          <div className={styles.projectsGrid}>
-            {filteredProjects.map((project, index) => (
-              <div key={index} className={styles.projectCard}>
-                <div className={styles.projectHeader}>
-                  <h3 className={styles.projectTitle}>{project.title}</h3>
-                  <span className={styles.categoryBadge}>{project.category}</span>
+          {activeTab === 'summary' ? (
+            <>
+              <div className={styles.header}>
+                <div className={styles.headerContent}>
+                  <h1 className={styles.title}>My Projects</h1>
+                  <p className={styles.subtitle}>
+                    A showcase of professional projects and technical achievements
+                  </p>
                 </div>
-                <p className={styles.projectDescription}>{project.description}</p>
-                {project.impact && (
-                  <div className={styles.impact}>
-                    <span className={styles.impactIcon}>🎯</span>
-                    <span className={styles.impactText}>{project.impact}</span>
+              </div>
+
+              {/* Category Filter */}
+              <div className={styles.filterBar}>
+                {categories.map(category => (
+                  <button
+                    key={category}
+                    className={`${styles.filterBtn} ${selectedCategory === category ? styles.active : ''}`}
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    {category === 'all' ? 'All Projects' : category}
+                  </button>
+                ))}
+              </div>
+
+              {/* Projects Grid */}
+              <div className={styles.projectsGrid}>
+                {filteredProjects.map((project, index) => (
+                  <div key={index} className={styles.projectCard}>
+                    <div className={styles.projectHeader}>
+                      <h3 className={styles.projectTitle}>{project.title}</h3>
+                      <span className={styles.categoryBadge}>{project.category}</span>
+                    </div>
+                    <p className={styles.projectDescription}>{project.description}</p>
+                    {project.impact && (
+                      <div className={styles.impact}>
+                        <span className={styles.impactIcon}>🎯</span>
+                        <span className={styles.impactText}>{project.impact}</span>
+                      </div>
+                    )}
+                    <div className={styles.techStack}>
+                      {project.technologies.map((tech, idx) => (
+                        <span key={idx} className={styles.techBadge}>{tech}</span>
+                      ))}
+                    </div>
                   </div>
-                )}
-                <div className={styles.techStack}>
-                  {project.technologies.map((tech, idx) => (
-                    <span key={idx} className={styles.techBadge}>{tech}</span>
-                  ))}
+                ))}
+              </div>
+
+              {/* Stats Section */}
+              <div className={styles.statsSection}>
+                <h2 className={styles.statsTitle}>Overall Impact</h2>
+                <div className={styles.statsGrid}>
+                  <div className={styles.statCard}>
+                    <div className={styles.statNumber}>6+</div>
+                    <div className={styles.statLabel}>Major Projects</div>
+                  </div>
+                  <div className={styles.statCard}>
+                    <div className={styles.statNumber}>20+</div>
+                    <div className={styles.statLabel}>Technologies</div>
+                  </div>
+                  <div className={styles.statCard}>
+                    <div className={styles.statNumber}>75%</div>
+                    <div className={styles.statLabel}>Performance Gain</div>
+                  </div>
+                  <div className={styles.statCard}>
+                    <div className={styles.statNumber}>90%</div>
+                    <div className={styles.statLabel}>Delivery Rate</div>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Stats Section */}
-          <div className={styles.statsSection}>
-            <h2 className={styles.statsTitle}>Overall Impact</h2>
-            <div className={styles.statsGrid}>
-              <div className={styles.statCard}>
-                <div className={styles.statNumber}>6+</div>
-                <div className={styles.statLabel}>Major Projects</div>
-              </div>
-              <div className={styles.statCard}>
-                <div className={styles.statNumber}>20+</div>
-                <div className={styles.statLabel}>Technologies</div>
-              </div>
-              <div className={styles.statCard}>
-                <div className={styles.statNumber}>75%</div>
-                <div className={styles.statLabel}>Performance Gain</div>
-              </div>
-              <div className={styles.statCard}>
-                <div className={styles.statNumber}>90%</div>
-                <div className={styles.statLabel}>Delivery Rate</div>
+            </>
+          ) : (
+            <div className={styles.iframeContainer}>
+              <iframe
+                src="https://pili-pinas.com"
+                className={styles.iframe}
+                title="Pili Pinas"
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                loading="lazy"
+              />
+              <div className={styles.iframeError}>
+                <p>⚠️ This website cannot be embedded due to security restrictions.</p>
+                <a href="https://pili-pinas.com" target="_blank" rel="noopener noreferrer" className={styles.openLink}>
+                  Open pili-pinas.com in new tab →
+                </a>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
