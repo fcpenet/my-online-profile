@@ -33,6 +33,41 @@ const ChromeIcon = () => (
 export default function Desktop() {
   const [time, setTime] = useState<string>('');
   const [date, setDate] = useState<string>('');
+  const [isBooting, setIsBooting] = useState<boolean>(true);
+  const [bootProgress, setBootProgress] = useState<number>(0);
+  const [bootMessages, setBootMessages] = useState<string[]>([]);
+
+  const bootSequence = [
+    'kikOS v4.2.0',
+    'Initializing system...',
+    'Loading kernel modules...',
+    'Detecting hardware...',
+    'Starting network services...',
+    'Mounting file systems...',
+    'Loading user profile...',
+    'Starting desktop environment...',
+    'kikOS ready.'
+  ];
+
+  useEffect(() => {
+    if (!isBooting) return;
+
+    const totalDuration = 3000; // 3 seconds total boot time
+    const messageDelay = totalDuration / bootSequence.length;
+
+    bootSequence.forEach((message, index) => {
+      setTimeout(() => {
+        setBootMessages(prev => [...prev, message]);
+        setBootProgress(((index + 1) / bootSequence.length) * 100);
+
+        if (index === bootSequence.length - 1) {
+          setTimeout(() => {
+            setIsBooting(false);
+          }, 500);
+        }
+      }, messageDelay * index);
+    });
+  }, []);
 
   useEffect(() => {
     const updateTime = () => {
@@ -53,6 +88,32 @@ export default function Desktop() {
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  if (isBooting) {
+    return (
+      <div className={styles.bootScreen}>
+        <div className={styles.bootContent}>
+          <div className={styles.bootHeader}>
+            <div className={styles.bootLogo}>kikOS</div>
+            <div className={styles.bootVersion}>Version 4.2.0</div>
+          </div>
+          <div className={styles.bootMessages}>
+            {bootMessages.map((message, index) => (
+              <div key={index} className={styles.bootMessage}>
+                {message}
+              </div>
+            ))}
+          </div>
+          <div className={styles.bootProgressBar}>
+            <div
+              className={styles.bootProgressFill}
+              style={{ width: `${bootProgress}%` }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.desktop}>
