@@ -93,6 +93,50 @@
   opacity: 0.5;
 }
 
+.addForm {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.addInput {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  background: white;
+  color: #1e293b;
+  transition: border-color 0.2s;
+}
+
+.addInput:focus {
+  border-color: #007AFF;
+}
+
+.addButton {
+  padding: 0.6rem 1rem;
+  background: #007AFF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.addButton:hover {
+  background: #0063d1;
+}
+
+.addError {
+  color: #ff3b30;
+  font-size: 0.8rem;
+  margin-top: -0.5rem;
+}
+
 @media (max-width: 768px) {
   .todoList {
     width: 95%;

@@ -67,7 +67,10 @@ export default function Desktop() {
         if (index === bootSequence.length - 1) {
           setTimeout(() => {
             setIsBooting(false);
-            setShowTour(true);
+            const hasSeenTour = localStorage.getItem('kikos-tour-completed');
+            if (!hasSeenTour) {
+              setShowTour(true);
+            }
           }, 500);
         }
       }, initialDelay + messageDelay * index);
@@ -96,6 +99,7 @@ export default function Desktop() {
 
   const handleCloseTour = () => {
     setShowTour(false);
+    localStorage.setItem('kikos-tour-completed', 'true');
   };
 
   if (isBooting) {
@@ -200,6 +204,13 @@ export default function Desktop() {
           </div>
           <span className={styles.iconLabel}>Snake</span>
         </Link>
+
+        <button className={styles.iconWrapper} onClick={() => setShowTour(true)}>
+          <div className={styles.icon} style={{ background: 'linear-gradient(135deg, #f59e0b22, #f59e0b44)' }}>
+            <span className={styles.iconEmoji}>👋</span>
+          </div>
+          <span className={styles.iconLabel}>Tour</span>
+        </button>
       </div>
 
       {/* Dock */}

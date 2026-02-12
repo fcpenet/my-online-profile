@@ -11,6 +11,8 @@ export default function TodoList() {
   const [items, setItems] = useState<TodoItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [newTitle, setNewTitle] = useState('');
+  const [addError, setAddError] = useState<string | null>(null);
 
   useEffect(() => {
     todoService.getAll()
@@ -36,6 +38,18 @@ export default function TodoList() {
     }
   };
 
+  const addItem = async () => {
+    const trimmed = newTitle.trim();
+    if (!trimmed) {
+      setAddError('Please enter a todo title');
+      return;
+    }
+    setAddError(null);
+    setNewTitle('');
+    const created = await todoService.add(trimmed);
+    setItems(prev => [...prev, created]);
+  };
+
   return (
     <div className={styles.todoList}>
       <div className={styles.todoHeader}>
@@ -47,6 +61,18 @@ export default function TodoList() {
         <div className={styles.todoTitle}>To Do</div>
       </div>
       <div className={styles.todoContent}>
+        <div className={styles.addForm}>
+          <input
+            type="text"
+            className={styles.addInput}
+            placeholder="Add a new todo..."
+            value={newTitle}
+            onChange={e => { setNewTitle(e.target.value); setAddError(null); }}
+            onKeyDown={e => { if (e.key === 'Enter') addItem(); }}
+          />
+          <button className={styles.addButton} onClick={addItem}>Add</button>
+        </div>
+        {addError && <div className={styles.addError}>{addError}</div>}
         {loading && <div className={styles.todoText}>Loading...</div>}
         {error && <div className={styles.todoText}>{error}</div>}
         {items.map(item => (
