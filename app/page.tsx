@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
-import WelcomeTour from './components/WelcomeTour';
+import WelcomeTour from './components/WelcomeTour/WelcomeTour';
+import TodoList from './components/TodoList/TodoList';
 
 const VSCodeIcon = () => (
   <svg viewBox="0 0 100 100" className={styles.vscodeIcon}>
@@ -168,30 +169,7 @@ export default function Desktop() {
       </div>
 
       {/* To-Do List */}
-      <div className={styles.todoList}>
-        <div className={styles.todoHeader}>
-          <div className={styles.todoControls}>
-            <span className={styles.todoControl} style={{ backgroundColor: '#ff5f56' }}></span>
-            <span className={styles.todoControl} style={{ backgroundColor: '#ffbd2e' }}></span>
-            <span className={styles.todoControl} style={{ backgroundColor: '#27c93f' }}></span>
-          </div>
-          <div className={styles.todoTitle}>To Do</div>
-        </div>
-        <div className={styles.todoContent}>
-          <div className={styles.todoItem}>
-            <input type="checkbox" className={styles.todoCheckbox} />
-            <span className={styles.todoText}>Setup vercel account for backend!</span>
-          </div>
-          <div className={styles.todoItem}>
-            <input type="checkbox" className={styles.todoCheckbox} />
-            <span className={styles.todoText}>Add to do list feature on my profile page</span>
-          </div>
-          <div className={styles.todoItem}>
-            <input type="checkbox" className={styles.todoCheckbox} />
-            <span className={styles.todoText}>Create new app for the store!</span>
-          </div>
-        </div>
-      </div>
+      <TodoList />
 
       {/* Desktop Icons */}
       <div className={styles.iconsContainer}>
