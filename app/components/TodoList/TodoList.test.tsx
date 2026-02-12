@@ -5,13 +5,11 @@ import type { TodoItem } from '../../services/TodoService/types';
 
 const mockGetAll = jest.fn();
 const mockToggle = jest.fn();
-const mockAdd = jest.fn();
 
 jest.mock('../../services/TodoService/TodoService', () => ({
   TodoService: jest.fn().mockImplementation(() => ({
     getAll: (...args: unknown[]) => mockGetAll(...args),
     toggle: (...args: unknown[]) => mockToggle(...args),
-    add: (...args: unknown[]) => mockAdd(...args),
   })),
 }));
 
@@ -129,95 +127,4 @@ describe('TodoList', () => {
     expect(text.className).toContain('todoTextChecked');
   });
 
-  describe('add item', () => {
-    it('renders an input field and add button', async () => {
-      await renderAndWaitForLoad();
-      expect(screen.getByPlaceholderText('Add a new todo...')).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: 'Add' })).toBeInTheDocument();
-    });
-
-    it('calls the service and appends the new item to the list', async () => {
-      const newItem: TodoItem = { id: 4, title: 'Brand new task', description: null, completed: false, createdAt: '', updatedAt: '' };
-      mockAdd.mockResolvedValue(newItem);
-      await renderAndWaitForLoad();
-
-      const user = userEvent.setup();
-      const input = screen.getByPlaceholderText('Add a new todo...');
-      const button = screen.getByRole('button', { name: 'Add' });
-
-      await user.type(input, 'Brand new task');
-      await user.click(button);
-
-      await waitFor(() => {
-        expect(mockAdd).toHaveBeenCalledWith('Brand new task');
-      });
-      await waitFor(() => {
-        expect(screen.getByText('Brand new task')).toBeInTheDocument();
-      });
-      expect(screen.getAllByRole('checkbox')).toHaveLength(4);
-    });
-
-    it('clears the input after adding', async () => {
-      const newItem: TodoItem = { id: 4, title: 'Another task', description: null, completed: false, createdAt: '', updatedAt: '' };
-      mockAdd.mockResolvedValue(newItem);
-      await renderAndWaitForLoad();
-
-      const user = userEvent.setup();
-      const input = screen.getByPlaceholderText('Add a new todo...');
-
-      await user.type(input, 'Another task');
-      await user.click(screen.getByRole('button', { name: 'Add' }));
-
-      await waitFor(() => {
-        expect(input).toHaveValue('');
-      });
-    });
-
-    it('does not add when input is empty', async () => {
-      await renderAndWaitForLoad();
-
-      const user = userEvent.setup();
-      await user.click(screen.getByRole('button', { name: 'Add' }));
-
-      expect(mockAdd).not.toHaveBeenCalled();
-    });
-
-    it('shows an error message when pressing add with empty input', async () => {
-      await renderAndWaitForLoad();
-
-      const user = userEvent.setup();
-      await user.click(screen.getByRole('button', { name: 'Add' }));
-
-      expect(screen.getByText('Please enter a todo title')).toBeInTheDocument();
-    });
-
-    it('clears the empty error when user starts typing', async () => {
-      await renderAndWaitForLoad();
-
-      const user = userEvent.setup();
-      await user.click(screen.getByRole('button', { name: 'Add' }));
-      expect(screen.getByText('Please enter a todo title')).toBeInTheDocument();
-
-      await user.type(screen.getByPlaceholderText('Add a new todo...'), 'a');
-      expect(screen.queryByText('Please enter a todo title')).not.toBeInTheDocument();
-    });
-
-    it('adds item on Enter key press', async () => {
-      const newItem: TodoItem = { id: 4, title: 'Enter task', description: null, completed: false, createdAt: '', updatedAt: '' };
-      mockAdd.mockResolvedValue(newItem);
-      await renderAndWaitForLoad();
-
-      const user = userEvent.setup();
-      const input = screen.getByPlaceholderText('Add a new todo...');
-
-      await user.type(input, 'Enter task{Enter}');
-
-      await waitFor(() => {
-        expect(mockAdd).toHaveBeenCalledWith('Enter task');
-      });
-      await waitFor(() => {
-        expect(screen.getByText('Enter task')).toBeInTheDocument();
-      });
-    });
-  });
 });

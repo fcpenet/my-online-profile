@@ -19,6 +19,7 @@ describe('Desktop', () => {
   beforeEach(() => {
     jest.useFakeTimers();
     localStorage.clear();
+    sessionStorage.clear();
   });
 
   afterEach(() => {
@@ -46,6 +47,24 @@ describe('Desktop', () => {
       render(<Desktop />);
 
       act(() => { jest.advanceTimersByTime(6500); });
+
+      expect(screen.queryByText('Version 4.2.0')).not.toBeInTheDocument();
+      expect(screen.getByText('Finder')).toBeInTheDocument();
+    });
+
+    it('saves boot completion to sessionStorage', () => {
+      render(<Desktop />);
+
+      expect(sessionStorage.getItem('kikos-booted')).toBeNull();
+
+      act(() => { jest.advanceTimersByTime(6500); });
+
+      expect(sessionStorage.getItem('kikos-booted')).toBe('true');
+    });
+
+    it('skips the boot sequence when sessionStorage has kikos-booted', () => {
+      sessionStorage.setItem('kikos-booted', 'true');
+      render(<Desktop />);
 
       expect(screen.queryByText('Version 4.2.0')).not.toBeInTheDocument();
       expect(screen.getByText('Finder')).toBeInTheDocument();

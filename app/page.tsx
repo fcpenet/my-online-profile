@@ -35,10 +35,20 @@ const ChromeIcon = () => (
 export default function Desktop() {
   const [time, setTime] = useState<string>('');
   const [date, setDate] = useState<string>('');
-  const [isBooting, setIsBooting] = useState<boolean>(true);
+  const [isBooting, setIsBooting] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return !sessionStorage.getItem('kikos-booted');
+    }
+    return true;
+  });
   const [bootProgress, setBootProgress] = useState<number>(0);
   const [bootMessages, setBootMessages] = useState<string[]>([]);
-  const [showTour, setShowTour] = useState<boolean>(false);
+  const [showTour, setShowTour] = useState<boolean>(() => {
+    if (typeof window !== 'undefined' && sessionStorage.getItem('kikos-booted')) {
+      return !localStorage.getItem('kikos-tour-completed');
+    }
+    return false;
+  });
 
   const bootSequence = [
     'kikOS v4.2.0',
@@ -67,6 +77,7 @@ export default function Desktop() {
         if (index === bootSequence.length - 1) {
           setTimeout(() => {
             setIsBooting(false);
+            sessionStorage.setItem('kikos-booted', 'true');
             const hasSeenTour = localStorage.getItem('kikos-tour-completed');
             if (!hasSeenTour) {
               setShowTour(true);
