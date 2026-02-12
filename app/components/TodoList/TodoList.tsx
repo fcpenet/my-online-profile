@@ -1,27 +1,39 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './TodoList.module.css';
+import { TodoService } from '../../services/TodoService/TodoService';
+import type { TodoItem } from '../../services/TodoService/types';
 
-const todoItems = [
-  'Setup vercel account for backend!',
-  'Add to do list feature on my profile page',
-  'Create new app for the store!',
-];
+const todoService = new TodoService();
 
 export default function TodoList() {
-  const [checkedItems, setCheckedItems] = useState<Set<number>>(new Set());
+  const [items, setItems] = useState<TodoItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const toggleItem = (index: number) => {
-    setCheckedItems(prev => {
-      const next = new Set(prev);
-      if (next.has(index)) {
-        next.delete(index);
-      } else {
-        next.add(index);
-      }
-      return next;
-    });
+  useEffect(() => {
+    todoService.getAll()
+      .then(setItems)
+      .catch(() => setError('Failed to load todos'))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const toggleItem = async (id: number) => {
+    const original = items;
+    setItems(prev =>
+      prev.map(item =>
+        item.id === id ? { ...item, completed: !item.completed } : item
+      )
+    );
+    try {
+      const updated = await todoService.toggle(id);
+      setItems(prev =>
+        prev.map(item => (item.id === updated.id ? updated : item))
+      );
+    } catch {
+      setItems(original);
+    }
   };
 
   return (
@@ -35,16 +47,18 @@ export default function TodoList() {
         <div className={styles.todoTitle}>To Do</div>
       </div>
       <div className={styles.todoContent}>
-        {todoItems.map((text, index) => (
-          <div key={index} className={styles.todoItem}>
+        {loading && <div className={styles.todoText}>Loading...</div>}
+        {error && <div className={styles.todoText}>{error}</div>}
+        {items.map(item => (
+          <div key={item.id} className={styles.todoItem}>
             <input
               type="checkbox"
               className={styles.todoCheckbox}
-              checked={checkedItems.has(index)}
-              onChange={() => toggleItem(index)}
+              checked={item.completed}
+              onChange={() => toggleItem(item.id)}
             />
-            <span className={`${styles.todoText} ${checkedItems.has(index) ? styles.todoTextChecked : ''}`}>
-              {text}
+            <span className={`${styles.todoText} ${item.completed ? styles.todoTextChecked : ''}`}>
+              {item.title}
             </span>
           </div>
         ))}
