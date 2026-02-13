@@ -17,8 +17,8 @@ jest.mock('./components/Terminal/Terminal', () => {
 });
 
 jest.mock('./components/TodoList/TodoList', () => {
-  return function MockTodoList() {
-    return <div data-testid="todo-list" />;
+  return function MockTodoList({ readOnly }: { readOnly?: boolean }) {
+    return <div data-testid="todo-list" data-readonly={String(!!readOnly)} />;
   };
 });
 
@@ -205,28 +205,33 @@ it('renders desktop icons with correct labels', () => {
     });
   });
 
-  describe('todo list visibility', () => {
+  describe('todo list', () => {
     function renderDesktop() {
       render(<Desktop />);
       act(() => { jest.advanceTimersByTime(6500); });
     }
 
-    it('does not show the todo list without an API key', () => {
-      renderDesktop();
-      expect(screen.queryByTestId('todo-list')).not.toBeInTheDocument();
-    });
-
-    it('shows the todo list when an API key is set', () => {
-      localStorage.setItem('kikos-api-key', 'test-key');
+    it('always renders the todo list', () => {
       renderDesktop();
       expect(screen.getByTestId('todo-list')).toBeInTheDocument();
     });
 
-    it('shows the todo list after setting API key via terminal and closing it', async () => {
+    it('renders in read-only mode without an API key', () => {
+      renderDesktop();
+      expect(screen.getByTestId('todo-list')).toHaveAttribute('data-readonly', 'true');
+    });
+
+    it('renders in interactive mode with an API key', () => {
+      localStorage.setItem('kikos-api-key', 'test-key');
+      renderDesktop();
+      expect(screen.getByTestId('todo-list')).toHaveAttribute('data-readonly', 'false');
+    });
+
+    it('switches to interactive mode after setting API key via terminal', async () => {
       const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
       renderDesktop();
 
-      expect(screen.queryByTestId('todo-list')).not.toBeInTheDocument();
+      expect(screen.getByTestId('todo-list')).toHaveAttribute('data-readonly', 'true');
 
       // Open terminal and simulate setting the key
       await user.keyboard('{Meta>}k{/Meta}');
@@ -234,7 +239,7 @@ it('renders desktop icons with correct labels', () => {
 
       // Close terminal — triggers re-check
       await user.click(screen.getByText('Close Terminal'));
-      expect(screen.getByTestId('todo-list')).toBeInTheDocument();
+      expect(screen.getByTestId('todo-list')).toHaveAttribute('data-readonly', 'false');
     });
   });
 });

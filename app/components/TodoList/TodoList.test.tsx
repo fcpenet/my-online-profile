@@ -13,6 +13,13 @@ jest.mock('../../services/TodoService/TodoService', () => ({
   })),
 }));
 
+jest.mock('../ErrorDialog/ErrorDialog', () => {
+  return function MockErrorDialog({ isVisible, onClose, message }: { isVisible: boolean; onClose: () => void; message: string }) {
+    if (!isVisible) return null;
+    return <div data-testid="error-dialog"><span>{message}</span><button onClick={onClose}>OK</button></div>;
+  };
+});
+
 const fakeItems: TodoItem[] = [
   { id: 1, title: 'Setup vercel account for backend!', description: null, completed: false, createdAt: '', updatedAt: '' },
   { id: 2, title: 'Add to do list feature on my profile page', description: null, completed: false, createdAt: '', updatedAt: '' },
@@ -44,11 +51,12 @@ describe('TodoList', () => {
     expect(mockGetAll).toHaveBeenCalledTimes(1);
   });
 
-  it('shows error message when fetch fails', async () => {
+  it('shows error dialog when fetch fails', async () => {
     mockGetAll.mockRejectedValue(new Error('Network error'));
     render(<TodoList />);
 
     await waitFor(() => {
+      expect(screen.getByTestId('error-dialog')).toBeInTheDocument();
       expect(screen.getByText('Failed to load todos')).toBeInTheDocument();
     });
   });
@@ -90,7 +98,7 @@ describe('TodoList', () => {
     });
   });
 
-  it('reverts optimistic toggle when service call fails', async () => {
+  it('reverts optimistic toggle and shows error dialog when service call fails', async () => {
     mockToggle.mockRejectedValue(new Error('Failed'));
     await renderAndWaitForLoad();
 
@@ -105,6 +113,22 @@ describe('TodoList', () => {
     await waitFor(() => {
       expect(checkboxes[0]).not.toBeChecked();
     });
+    expect(screen.getByTestId('error-dialog')).toBeInTheDocument();
+    expect(screen.getByText('Failed to update todo')).toBeInTheDocument();
+  });
+
+  it('dismisses error dialog when OK is clicked', async () => {
+    mockGetAll.mockRejectedValue(new Error('Network error'));
+    render(<TodoList />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error-dialog')).toBeInTheDocument();
+    });
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole('button', { name: 'OK' }));
+
+    expect(screen.queryByTestId('error-dialog')).not.toBeInTheDocument();
   });
 
   it('applies strikethrough class for completed items', async () => {
@@ -127,4 +151,28 @@ describe('TodoList', () => {
     expect(text.className).toContain('todoTextChecked');
   });
 
+  describe('readOnly mode', () => {
+    function renderReadOnly() {
+      mockGetAll.mockResolvedValue(fakeItems);
+      render(<TodoList readOnly />);
+      return waitFor(() => {
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      });
+    }
+
+    it('disables all checkboxes when readOnly is true', async () => {
+      await renderReadOnly();
+      const checkboxes = screen.getAllByRole('checkbox');
+      checkboxes.forEach(cb => expect(cb).toBeDisabled());
+    });
+
+    it('does not call toggle when clicking a disabled checkbox', async () => {
+      await renderReadOnly();
+      const user = userEvent.setup();
+      const checkboxes = screen.getAllByRole('checkbox');
+
+      await user.click(checkboxes[0]);
+      expect(mockToggle).not.toHaveBeenCalled();
+    });
+  });
 });

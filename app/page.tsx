@@ -208,8 +208,8 @@ export default function Desktop() {
         </div>
       </div>
 
-      {/* To-Do List — requires API key set via terminal */}
-      {hasApiKey && <TodoList />}
+      {/* To-Do List — read-only without API key */}
+      <TodoList readOnly={!hasApiKey} />
 
       {/* Desktop Icons */}
       <div className={styles.iconsContainer}>
