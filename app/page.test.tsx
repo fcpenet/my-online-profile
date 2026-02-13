@@ -9,6 +9,19 @@ jest.mock('./components/WelcomeTour/WelcomeTour', () => {
   };
 });
 
+jest.mock('./components/Terminal/Terminal', () => {
+  return function MockTerminal({ isVisible, onClose }: { isVisible: boolean; onClose: () => void }) {
+    if (!isVisible) return null;
+    return <div data-testid="terminal"><button onClick={onClose}>Close Terminal</button></div>;
+  };
+});
+
+jest.mock('./components/TodoList/TodoList', () => {
+  return function MockTodoList() {
+    return <div data-testid="todo-list" />;
+  };
+});
+
 describe('Desktop', () => {
   beforeEach(() => {
     jest.useFakeTimers();
@@ -155,6 +168,73 @@ it('renders desktop icons with correct labels', () => {
 
       await user.click(screen.getByText('Tour'));
       expect(screen.getByTestId('welcome-tour')).toBeInTheDocument();
+    });
+  });
+
+  describe('terminal shortcut', () => {
+    function renderDesktop() {
+      render(<Desktop />);
+      act(() => { jest.advanceTimersByTime(6500); });
+    }
+
+    it('opens the terminal with Cmd+K', async () => {
+      const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+      renderDesktop();
+
+      expect(screen.queryByTestId('terminal')).not.toBeInTheDocument();
+
+      await user.keyboard('{Meta>}k{/Meta}');
+      expect(screen.getByTestId('terminal')).toBeInTheDocument();
+    });
+
+    it('closes the terminal with Cmd+K again', async () => {
+      const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+      renderDesktop();
+
+      await user.keyboard('{Meta>}k{/Meta}');
+      expect(screen.getByTestId('terminal')).toBeInTheDocument();
+
+      await user.keyboard('{Meta>}k{/Meta}');
+      expect(screen.queryByTestId('terminal')).not.toBeInTheDocument();
+    });
+
+    it('does not show a terminal desktop icon or dock item', () => {
+      renderDesktop();
+      expect(screen.queryByText('Terminal')).not.toBeInTheDocument();
+      expect(screen.queryByTitle('Terminal')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('todo list visibility', () => {
+    function renderDesktop() {
+      render(<Desktop />);
+      act(() => { jest.advanceTimersByTime(6500); });
+    }
+
+    it('does not show the todo list without an API key', () => {
+      renderDesktop();
+      expect(screen.queryByTestId('todo-list')).not.toBeInTheDocument();
+    });
+
+    it('shows the todo list when an API key is set', () => {
+      localStorage.setItem('kikos-api-key', 'test-key');
+      renderDesktop();
+      expect(screen.getByTestId('todo-list')).toBeInTheDocument();
+    });
+
+    it('shows the todo list after setting API key via terminal and closing it', async () => {
+      const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+      renderDesktop();
+
+      expect(screen.queryByTestId('todo-list')).not.toBeInTheDocument();
+
+      // Open terminal and simulate setting the key
+      await user.keyboard('{Meta>}k{/Meta}');
+      localStorage.setItem('kikos-api-key', 'test-key');
+
+      // Close terminal — triggers re-check
+      await user.click(screen.getByText('Close Terminal'));
+      expect(screen.getByTestId('todo-list')).toBeInTheDocument();
     });
   });
 });

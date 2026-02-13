@@ -29,10 +29,12 @@ describe('TodoService', () => {
 
   beforeEach(() => {
     service = new TodoService(BASE_URL);
+    localStorage.setItem('kikos-api-key', 'test-key-123');
   });
 
   afterEach(() => {
     global.fetch = originalFetch;
+    localStorage.clear();
   });
 
   describe('getAll', () => {
@@ -76,7 +78,7 @@ describe('TodoService', () => {
 
       expect(global.fetch).toHaveBeenCalledWith(`${BASE_URL}/api/todos/`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-API-Key': 'test-key-123' },
         body: JSON.stringify({ title: 'New task' }),
       });
       expect(item.title).toBe('New task');
@@ -104,7 +106,7 @@ describe('TodoService', () => {
       expect(global.fetch).toHaveBeenNthCalledWith(1, `${BASE_URL}/api/todos/1`);
       expect(global.fetch).toHaveBeenNthCalledWith(2, `${BASE_URL}/api/todos/1`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-API-Key': 'test-key-123' },
         body: JSON.stringify({ completed: true }),
       });
       expect(item.completed).toBe(true);
@@ -122,7 +124,7 @@ describe('TodoService', () => {
 
       expect(global.fetch).toHaveBeenNthCalledWith(2, `${BASE_URL}/api/todos/1`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-API-Key': 'test-key-123' },
         body: JSON.stringify({ completed: false }),
       });
       expect(item.completed).toBe(false);
@@ -152,7 +154,7 @@ describe('TodoService', () => {
 
       expect(global.fetch).toHaveBeenCalledWith(`${BASE_URL}/api/todos/1`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-API-Key': 'test-key-123' },
         body: JSON.stringify({ title: 'Updated' }),
       });
       expect(item.title).toBe('Updated');
@@ -172,6 +174,7 @@ describe('TodoService', () => {
 
       expect(global.fetch).toHaveBeenCalledWith(`${BASE_URL}/api/todos/1`, {
         method: 'DELETE',
+        headers: { 'X-API-Key': 'test-key-123' },
       });
     });
 

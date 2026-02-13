@@ -20,6 +20,13 @@ export class TodoService {
     this.baseUrl = baseUrl;
   }
 
+  private getAuthHeaders(): Record<string, string> {
+    const apiKey = typeof window !== 'undefined'
+      ? localStorage.getItem('kikos-api-key')
+      : null;
+    return apiKey ? { 'X-API-Key': apiKey } : {};
+  }
+
   async getAll(): Promise<TodoItem[]> {
     const res = await fetch(`${this.baseUrl}/api/todos/`);
     if (!res.ok) throw new Error('Failed to fetch todos');
@@ -30,7 +37,7 @@ export class TodoService {
   async add(title: string): Promise<TodoItem> {
     const res = await fetch(`${this.baseUrl}/api/todos/`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...this.getAuthHeaders() },
       body: JSON.stringify({ title }),
     });
     if (!res.ok) throw new Error('Failed to create todo');
@@ -44,7 +51,7 @@ export class TodoService {
 
     const patchRes = await fetch(`${this.baseUrl}/api/todos/${id}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...this.getAuthHeaders() },
       body: JSON.stringify({ completed: !current.completed }),
     });
     if (!patchRes.ok) throw new Error('Failed to update todo');
@@ -54,7 +61,7 @@ export class TodoService {
   async update(id: number, title: string): Promise<TodoItem> {
     const res = await fetch(`${this.baseUrl}/api/todos/${id}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...this.getAuthHeaders() },
       body: JSON.stringify({ title }),
     });
     if (!res.ok) throw new Error('Failed to update todo');
@@ -64,6 +71,7 @@ export class TodoService {
   async delete(id: number): Promise<void> {
     const res = await fetch(`${this.baseUrl}/api/todos/${id}`, {
       method: 'DELETE',
+      headers: { ...this.getAuthHeaders() },
     });
     if (!res.ok) throw new Error('Failed to delete todo');
   }

@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
 import WelcomeTour from './components/WelcomeTour/WelcomeTour';
-// import TodoList from './components/TodoList/TodoList';
+import Terminal from './components/Terminal/Terminal';
+import TodoList from './components/TodoList/TodoList';
 
 const VSCodeIcon = () => (
   <svg viewBox="0 0 100 100" className={styles.vscodeIcon}>
@@ -46,6 +47,13 @@ export default function Desktop() {
   const [showTour, setShowTour] = useState<boolean>(() => {
     if (typeof window !== 'undefined' && sessionStorage.getItem('kikos-booted')) {
       return !localStorage.getItem('kikos-tour-completed');
+    }
+    return false;
+  });
+  const [showTerminal, setShowTerminal] = useState<boolean>(false);
+  const [hasApiKey, setHasApiKey] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return !!localStorage.getItem('kikos-api-key');
     }
     return false;
   });
@@ -108,6 +116,17 @@ export default function Desktop() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.metaKey && !e.shiftKey && e.key === 'k') {
+        e.preventDefault();
+        setShowTerminal(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const handleCloseTour = () => {
     setShowTour(false);
     localStorage.setItem('kikos-tour-completed', 'true');
@@ -143,6 +162,12 @@ export default function Desktop() {
     <div className={styles.desktop}>
       {/* Personality Tour */}
       <WelcomeTour isVisible={showTour} onClose={handleCloseTour} />
+
+      {/* Secret Terminal (Ctrl+Shift+T) */}
+      <Terminal isVisible={showTerminal} onClose={() => {
+        setShowTerminal(false);
+        setHasApiKey(!!localStorage.getItem('kikos-api-key'));
+      }} />
 
       {/* Menu Bar */}
       <div className={styles.menuBar}>
@@ -183,8 +208,8 @@ export default function Desktop() {
         </div>
       </div>
 
-      {/* To-Do List */}
-      {/* <TodoList /> */}
+      {/* To-Do List — requires API key set via terminal */}
+      {hasApiKey && <TodoList />}
 
       {/* Desktop Icons */}
       <div className={styles.iconsContainer}>
