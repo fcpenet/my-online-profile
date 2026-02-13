@@ -93,6 +93,73 @@
   opacity: 0.5;
 }
 
+.saveButton {
+  width: 100%;
+  padding: 0.6rem;
+  background: #007AFF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.saveButton:hover {
+  background: #0063d1;
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.addForm {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.addInput {
+  flex: 1;
+  min-width: 0;
+  padding: 0.6rem 0.75rem;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #1e293b;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.addInput:focus {
+  border-color: #007AFF;
+}
+
+.addButton {
+  padding: 0.6rem 1.25rem;
+  background: #007AFF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.addButton:hover {
+  background: #0063d1;
+}
+
+.addError {
+  width: 100%;
+  font-size: 0.8rem;
+  color: #ef4444;
+  margin-top: -0.25rem;
+}
 
 @media (max-width: 768px) {
   .todoList {

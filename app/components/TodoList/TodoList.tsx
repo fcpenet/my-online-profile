@@ -14,31 +14,80 @@ interface TodoListProps {
 
 export default function TodoList({ readOnly = false }: TodoListProps) {
   const [items, setItems] = useState<TodoItem[]>([]);
+  const [savedItems, setSavedItems] = useState<TodoItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [newTitle, setNewTitle] = useState('');
+  const [addError, setAddError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     todoService.getAll()
-      .then(setItems)
+      .then((data) => {
+        setItems(data);
+        setSavedItems(data);
+      })
       .catch(() => setError('Failed to load todos'))
       .finally(() => setLoading(false));
   }, []);
 
-  const toggleItem = async (id: number) => {
-    const original = items;
+  const hasChanges = items.some((item) => {
+    const saved = savedItems.find((s) => s.id === item.id);
+    return saved && saved.completed !== item.completed;
+  });
+
+  const toggleItem = (id: number) => {
     setItems(prev =>
       prev.map(item =>
         item.id === id ? { ...item, completed: !item.completed } : item
       )
     );
+  };
+
+  const saveChanges = async () => {
+    setSaving(true);
     try {
-      const updated = await todoService.toggle(id);
+      const changed = items.filter((item) => {
+        const saved = savedItems.find((s) => s.id === item.id);
+        return saved && saved.completed !== item.completed;
+      });
+      const results = await Promise.all(
+        changed.map((item) => todoService.toggle(item.id))
+      );
       setItems(prev =>
-        prev.map(item => (item.id === updated.id ? updated : item))
+        prev.map(item => {
+          const updated = results.find(r => r.id === item.id);
+          return updated || item;
+        })
+      );
+      setSavedItems(prev =>
+        prev.map(saved => {
+          const updated = results.find(r => r.id === saved.id);
+          return updated || saved;
+        })
       );
     } catch {
-      setItems(original);
-      setError('Failed to update todo');
+      setItems(savedItems);
+      setError('Failed to save changes');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const addItem = async () => {
+    const title = newTitle.trim();
+    if (!title) {
+      setAddError('Please enter a title');
+      return;
+    }
+    setAddError(null);
+    try {
+      const created = await todoService.add(title);
+      setItems(prev => [...prev, created]);
+      setSavedItems(prev => [...prev, created]);
+      setNewTitle('');
+    } catch {
+      setError('Failed to add todo');
     }
   };
 
@@ -74,6 +123,30 @@ export default function TodoList({ readOnly = false }: TodoListProps) {
             </span>
           </div>
         ))}
+        {hasChanges && !readOnly && (
+          <button className={styles.saveButton} onClick={saveChanges} disabled={saving}>
+            {saving ? 'Saving...' : 'Save'}
+          </button>
+        )}
+        {!readOnly && (
+          <div className={styles.addForm}>
+            <input
+              className={styles.addInput}
+              type="text"
+              placeholder="Add a new todo..."
+              value={newTitle}
+              onChange={(e) => {
+                setNewTitle(e.target.value);
+                if (addError) setAddError(null);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') addItem();
+              }}
+            />
+            <button className={styles.addButton} onClick={addItem}>Add</button>
+            {addError && <div className={styles.addError}>{addError}</div>}
+          </div>
+        )}
       </div>
     </div>
   );
