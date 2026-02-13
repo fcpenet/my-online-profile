@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
 import WelcomeTour from './components/WelcomeTour/WelcomeTour';
-import TodoList from './components/TodoList/TodoList';
+// import TodoList from './components/TodoList/TodoList';
 
 const VSCodeIcon = () => (
   <svg viewBox="0 0 100 100" className={styles.vscodeIcon}>
@@ -184,7 +184,7 @@ export default function Desktop() {
       </div>
 
       {/* To-Do List */}
-      <TodoList />
+      {/* <TodoList /> */}
 
       {/* Desktop Icons */}
       <div className={styles.iconsContainer}>

@@ -9,12 +9,6 @@ jest.mock('./components/WelcomeTour/WelcomeTour', () => {
   };
 });
 
-jest.mock('./components/TodoList/TodoList', () => {
-  return function MockTodoList() {
-    return <div data-testid="todo-list" />;
-  };
-});
-
 describe('Desktop', () => {
   beforeEach(() => {
     jest.useFakeTimers();
@@ -93,12 +87,7 @@ describe('Desktop', () => {
       expect(screen.getByText('13+')).toBeInTheDocument();
     });
 
-    it('renders the TodoList component', () => {
-      renderDesktop();
-      expect(screen.getByTestId('todo-list')).toBeInTheDocument();
-    });
-
-    it('renders desktop icons with correct labels', () => {
+it('renders desktop icons with correct labels', () => {
       renderDesktop();
       expect(screen.getByText('Resume')).toBeInTheDocument();
       expect(screen.getByText('Workspace')).toBeInTheDocument();
