@@ -75,6 +75,16 @@ export default function TodoList({ readOnly = false }: TodoListProps) {
     }
   };
 
+  const deleteItem = async (id: number) => {
+    try {
+      await todoService.delete(id);
+      setItems(prev => prev.filter(item => item.id !== id));
+      setSavedItems(prev => prev.filter(item => item.id !== id));
+    } catch {
+      setError('Failed to delete todo');
+    }
+  };
+
   const addItem = async () => {
     const title = newTitle.trim();
     if (!title) {
@@ -136,6 +146,15 @@ export default function TodoList({ readOnly = false }: TodoListProps) {
             <span className={`${styles.todoText} ${item.completed ? styles.todoTextChecked : ''}`}>
               {item.title}
             </span>
+            {!readOnly && (
+              <button
+                className={styles.deleteButton}
+                onClick={() => deleteItem(item.id)}
+                aria-label={`Delete ${item.title}`}
+              >
+                &times;
+              </button>
+            )}
           </div>
         ))}
         {hasChanges && !readOnly && (

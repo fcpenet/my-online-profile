@@ -6,12 +6,14 @@ import type { TodoItem } from '../../services/TodoService/types';
 const mockGetAll = jest.fn();
 const mockToggle = jest.fn();
 const mockAdd = jest.fn();
+const mockDelete = jest.fn();
 
 jest.mock('../../services/TodoService/TodoService', () => ({
   TodoService: jest.fn().mockImplementation(() => ({
     getAll: (...args: unknown[]) => mockGetAll(...args),
     toggle: (...args: unknown[]) => mockToggle(...args),
     add: (...args: unknown[]) => mockAdd(...args),
+    delete: (...args: unknown[]) => mockDelete(...args),
   })),
 }));
 
@@ -333,6 +335,54 @@ describe('TodoList', () => {
         expect(screen.getByTestId('error-dialog')).toBeInTheDocument();
         expect(screen.getByText('Failed to add todo')).toBeInTheDocument();
       });
+    });
+  });
+
+  describe('delete item', () => {
+    it('renders delete buttons when not readOnly', async () => {
+      await renderAndWaitForLoad();
+      expect(screen.getByRole('button', { name: /Delete Setup vercel/ })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Delete Add to do/ })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Delete Create new/ })).toBeInTheDocument();
+    });
+
+    it('does not render delete buttons in readOnly mode', async () => {
+      mockGetAll.mockResolvedValue(fakeItems);
+      render(<TodoList readOnly />);
+      await waitFor(() => {
+        expect(screen.queryByRole('status')).not.toBeInTheDocument();
+      });
+      expect(screen.queryByRole('button', { name: /Delete/ })).not.toBeInTheDocument();
+    });
+
+    it('removes item from list after successful delete', async () => {
+      mockDelete.mockResolvedValue(undefined);
+
+      await renderAndWaitForLoad();
+      const user = userEvent.setup();
+
+      await user.click(screen.getByRole('button', { name: /Delete Setup vercel/ }));
+
+      await waitFor(() => {
+        expect(mockDelete).toHaveBeenCalledWith(1);
+      });
+      expect(screen.queryByText('Setup vercel account for backend!')).not.toBeInTheDocument();
+      expect(screen.getByText('Add to do list feature on my profile page')).toBeInTheDocument();
+    });
+
+    it('shows error dialog when delete fails', async () => {
+      mockDelete.mockRejectedValue(new Error('Server error'));
+
+      await renderAndWaitForLoad();
+      const user = userEvent.setup();
+
+      await user.click(screen.getByRole('button', { name: /Delete Setup vercel/ }));
+
+      await waitFor(() => {
+        expect(screen.getByTestId('error-dialog')).toBeInTheDocument();
+        expect(screen.getByText('Failed to delete todo')).toBeInTheDocument();
+      });
+      expect(screen.getByText('Setup vercel account for backend!')).toBeInTheDocument();
     });
   });
 

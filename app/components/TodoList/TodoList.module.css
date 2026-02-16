@@ -93,6 +93,29 @@
   opacity: 0.5;
 }
 
+.deleteButton {
+  margin-left: auto;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 1.1rem;
+  line-height: 1;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteButton:hover {
+  background: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+}
+
 .saveButton {
   width: 100%;
   padding: 0.6rem;
