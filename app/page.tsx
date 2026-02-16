@@ -71,8 +71,8 @@ export default function Desktop() {
   useEffect(() => {
     if (!isBooting) return;
 
-    const initialDelay = 1500; // pause before messages start
-    const totalDuration = 4000; // 4 seconds for messages to roll through
+    const initialDelay = 750; // pause before messages start
+    const totalDuration = 2000; // 2 seconds for messages to roll through
     const messageDelay = totalDuration / bootSequence.length;
 
     bootSequence.forEach((message, index) => {
@@ -88,7 +88,7 @@ export default function Desktop() {
             if (!hasSeenTour) {
               setShowTour(true);
             }
-          }, 500);
+          }, 250);
         }
       }, initialDelay + messageDelay * index);
     });

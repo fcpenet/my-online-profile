@@ -52,17 +52,17 @@ describe('Desktop', () => {
     it('displays boot messages over time', () => {
       render(<Desktop />);
 
-      act(() => { jest.advanceTimersByTime(1500); });
+      act(() => { jest.advanceTimersByTime(750); });
       expect(screen.getByText('kikOS v4.2.0')).toBeInTheDocument();
 
-      act(() => { jest.advanceTimersByTime(445); });
+      act(() => { jest.advanceTimersByTime(223); });
       expect(screen.getByText('Initializing system...')).toBeInTheDocument();
     });
 
     it('transitions to the desktop after boot completes', () => {
       render(<Desktop />);
 
-      act(() => { jest.advanceTimersByTime(6500); });
+      act(() => { jest.advanceTimersByTime(3500); });
 
       expect(screen.queryByText('Version 4.2.0')).not.toBeInTheDocument();
       expect(screen.getByText('Finder')).toBeInTheDocument();
@@ -73,7 +73,7 @@ describe('Desktop', () => {
 
       expect(sessionStorage.getItem('kikos-booted')).toBeNull();
 
-      act(() => { jest.advanceTimersByTime(6500); });
+      act(() => { jest.advanceTimersByTime(3500); });
 
       expect(sessionStorage.getItem('kikos-booted')).toBe('true');
     });
@@ -90,7 +90,7 @@ describe('Desktop', () => {
   describe('desktop elements', () => {
     function renderDesktop() {
       render(<Desktop />);
-      act(() => { jest.advanceTimersByTime(6500); });
+      act(() => { jest.advanceTimersByTime(3500); });
     }
 
     it('renders the menu bar', () => {
@@ -144,7 +144,7 @@ it('renders desktop icons with correct labels', () => {
   describe('welcome tour integration', () => {
     function renderDesktop() {
       render(<Desktop />);
-      act(() => { jest.advanceTimersByTime(6500); });
+      act(() => { jest.advanceTimersByTime(3500); });
     }
 
     it('shows the tour on first visit', () => {
@@ -183,7 +183,7 @@ it('renders desktop icons with correct labels', () => {
   describe('terminal shortcut', () => {
     function renderDesktop() {
       render(<Desktop />);
-      act(() => { jest.advanceTimersByTime(6500); });
+      act(() => { jest.advanceTimersByTime(3500); });
     }
 
     it('opens the terminal with Cmd+K', async () => {
@@ -217,7 +217,7 @@ it('renders desktop icons with correct labels', () => {
   describe('todo list', () => {
     function renderDesktop() {
       render(<Desktop />);
-      act(() => { jest.advanceTimersByTime(6500); });
+      act(() => { jest.advanceTimersByTime(3500); });
     }
 
     it('always renders the todo list', () => {
