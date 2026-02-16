@@ -1,6 +1,6 @@
 import type { TodoItem, TodoApiResponse } from './types';
 
-const DEFAULT_BASE_URL = 'https://rag-pipeline-91ct-fdqd29zfy-fcpenets-projects.vercel.app';
+const DEFAULT_BASE_URL = 'https://rag-pipeline-91ct.vercel.app';
 
 function mapResponse(data: TodoApiResponse): TodoItem {
   return {
@@ -25,6 +25,17 @@ export class TodoService {
       ? localStorage.getItem('kikos-api-key')
       : null;
     return apiKey ? { 'X-API-Key': apiKey } : {};
+  }
+
+  async validateKey(): Promise<boolean> {
+    const headers = this.getAuthHeaders();
+    if (!headers['X-API-Key']) return false;
+    try {
+      const res = await fetch(`${this.baseUrl}/api/settings/validate-key`, { headers });
+      return res.ok;
+    } catch {
+      return false;
+    }
   }
 
   async getAll(): Promise<TodoItem[]> {

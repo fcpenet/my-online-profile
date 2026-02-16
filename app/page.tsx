@@ -6,6 +6,9 @@ import styles from './page.module.css';
 import WelcomeTour from './components/WelcomeTour/WelcomeTour';
 import Terminal from './components/Terminal/Terminal';
 import TodoList from './components/TodoList/TodoList';
+import { TodoService } from './services/TodoService/TodoService';
+
+const todoService = new TodoService();
 
 const VSCodeIcon = () => (
   <svg viewBox="0 0 100 100" className={styles.vscodeIcon}>
@@ -51,12 +54,7 @@ export default function Desktop() {
     return false;
   });
   const [showTerminal, setShowTerminal] = useState<boolean>(false);
-  const [hasApiKey, setHasApiKey] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      return !!localStorage.getItem('kikos-api-key');
-    }
-    return false;
-  });
+  const [isKeyValid, setIsKeyValid] = useState<boolean>(false);
 
   const bootSequence = [
     'kikOS v4.2.0',
@@ -117,6 +115,12 @@ export default function Desktop() {
   }, []);
 
   useEffect(() => {
+    if (localStorage.getItem('kikos-api-key')) {
+      todoService.validateKey().then(setIsKeyValid);
+    }
+  }, []);
+
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.metaKey && !e.shiftKey && e.key === 'k') {
         e.preventDefault();
@@ -166,7 +170,7 @@ export default function Desktop() {
       {/* Secret Terminal (Ctrl+Shift+T) */}
       <Terminal isVisible={showTerminal} onClose={() => {
         setShowTerminal(false);
-        setHasApiKey(!!localStorage.getItem('kikos-api-key'));
+        todoService.validateKey().then(setIsKeyValid);
       }} />
 
       {/* Menu Bar */}
@@ -209,7 +213,7 @@ export default function Desktop() {
       </div>
 
       {/* To-Do List — read-only without API key */}
-      <TodoList readOnly={!hasApiKey} />
+      <TodoList readOnly={!isKeyValid} />
 
       {/* Desktop Icons */}
       <div className={styles.iconsContainer}>

@@ -1,12 +1,20 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Terminal from './Terminal';
+
+const mockValidateKey = jest.fn();
+jest.mock('../../services/TodoService/TodoService', () => ({
+  TodoService: jest.fn().mockImplementation(() => ({
+    validateKey: (...args: unknown[]) => mockValidateKey(...args),
+  })),
+}));
 
 describe('Terminal', () => {
   const onClose = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockValidateKey.mockResolvedValue(true);
     localStorage.clear();
   });
 
@@ -48,14 +56,32 @@ describe('Terminal', () => {
     expect(screen.queryByText(/Welcome to kikOS Terminal/)).not.toBeInTheDocument();
   });
 
-  it('saves API key to localStorage and shows masked confirmation', async () => {
+  it('validates and saves a valid API key', async () => {
+    mockValidateKey.mockResolvedValue(true);
     const user = userEvent.setup();
     render(<Terminal isVisible={true} onClose={onClose} />);
 
     await user.type(screen.getByRole('textbox'), 'set-api-key mySecretKey123{Enter}');
 
+    expect(screen.getByText('Validating API key...')).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(screen.getByText(/API key valid: mySe\*\*\*\*\*\*\*\*\*\*/)).toBeInTheDocument();
+    });
     expect(localStorage.getItem('kikos-api-key')).toBe('mySecretKey123');
-    expect(screen.getByText(/API key saved: mySe\*\*\*\*\*\*\*\*\*\*/)).toBeInTheDocument();
+  });
+
+  it('removes an invalid API key after validation fails', async () => {
+    mockValidateKey.mockResolvedValue(false);
+    const user = userEvent.setup();
+    render(<Terminal isVisible={true} onClose={onClose} />);
+
+    await user.type(screen.getByRole('textbox'), 'set-api-key badKey{Enter}');
+
+    await waitFor(() => {
+      expect(screen.getByText('Invalid API key. Key has been removed.')).toBeInTheDocument();
+    });
+    expect(localStorage.getItem('kikos-api-key')).toBeNull();
   });
 
   it('shows error when set-api-key is used without a value', async () => {

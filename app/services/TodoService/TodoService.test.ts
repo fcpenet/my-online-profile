@@ -1,7 +1,7 @@
 import { TodoService } from './TodoService';
 import type { TodoApiResponse } from './types';
 
-const BASE_URL = 'https://rag-pipeline-91ct-fdqd29zfy-fcpenets-projects.vercel.app';
+const BASE_URL = 'https://rag-pipeline-91ct.vercel.app';
 
 function mockApiResponse(id: number, overrides: Partial<TodoApiResponse> = {}): TodoApiResponse {
   return {
@@ -35,6 +35,37 @@ describe('TodoService', () => {
   afterEach(() => {
     global.fetch = originalFetch;
     localStorage.clear();
+  });
+
+  describe('validateKey', () => {
+    it('returns true when API responds with 200', async () => {
+      global.fetch = mockFetch(null, 200);
+      const valid = await service.validateKey();
+      expect(valid).toBe(true);
+      expect(global.fetch).toHaveBeenCalledWith(`${BASE_URL}/api/settings/validate-key`, {
+        headers: { 'X-API-Key': 'test-key-123' },
+      });
+    });
+
+    it('returns false when API responds with 401', async () => {
+      global.fetch = mockFetch(null, 401);
+      const valid = await service.validateKey();
+      expect(valid).toBe(false);
+    });
+
+    it('returns false when no API key is set', async () => {
+      localStorage.removeItem('kikos-api-key');
+      global.fetch = jest.fn();
+      const valid = await service.validateKey();
+      expect(valid).toBe(false);
+      expect(global.fetch).not.toHaveBeenCalled();
+    });
+
+    it('returns false when fetch throws a network error', async () => {
+      global.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
+      const valid = await service.validateKey();
+      expect(valid).toBe(false);
+    });
   });
 
   describe('getAll', () => {

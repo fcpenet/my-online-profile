@@ -2,6 +2,9 @@
 
 import { useState, useRef, useEffect } from 'react';
 import styles from './Terminal.module.css';
+import { TodoService } from '../../services/TodoService/TodoService';
+
+const todoService = new TodoService();
 
 interface TerminalProps {
   isVisible: boolean;
@@ -65,8 +68,19 @@ export default function Terminal({ isVisible, onClose }: TerminalProps) {
         newOutput.push({ text: 'Usage: set-api-key <key>', type: 'error' });
       } else {
         localStorage.setItem('kikos-api-key', key);
-        const masked = key.length <= 4 ? '****' : key.slice(0, 4) + '*'.repeat(key.length - 4);
-        newOutput.push({ text: `API key saved: ${masked}`, type: 'success' });
+        newOutput.push({ text: 'Validating API key...', type: 'output' });
+        setOutput(newOutput);
+        setInput('');
+        todoService.validateKey().then((valid) => {
+          if (valid) {
+            const masked = key.length <= 4 ? '****' : key.slice(0, 4) + '*'.repeat(key.length - 4);
+            setOutput(prev => [...prev, { text: `API key valid: ${masked}`, type: 'success' }]);
+          } else {
+            localStorage.removeItem('kikos-api-key');
+            setOutput(prev => [...prev, { text: 'Invalid API key. Key has been removed.', type: 'error' }]);
+          }
+        });
+        return;
       }
     } else {
       newOutput.push({ text: `command not found: ${trimmed}`, type: 'error' });

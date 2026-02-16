@@ -1,4 +1,4 @@
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Desktop from './page';
 
@@ -22,9 +22,18 @@ jest.mock('./components/TodoList/TodoList', () => {
   };
 });
 
+const mockValidateKey = jest.fn();
+jest.mock('./services/TodoService/TodoService', () => ({
+  TodoService: jest.fn().mockImplementation(() => ({
+    validateKey: (...args: unknown[]) => mockValidateKey(...args),
+  })),
+}));
+
 describe('Desktop', () => {
   beforeEach(() => {
     jest.useFakeTimers();
+    jest.clearAllMocks();
+    mockValidateKey.mockResolvedValue(false);
     localStorage.clear();
     sessionStorage.clear();
   });
@@ -221,13 +230,26 @@ it('renders desktop icons with correct labels', () => {
       expect(screen.getByTestId('todo-list')).toHaveAttribute('data-readonly', 'true');
     });
 
-    it('renders in interactive mode with an API key', () => {
-      localStorage.setItem('kikos-api-key', 'test-key');
+    it('renders in read-only mode when API key is invalid', async () => {
+      localStorage.setItem('kikos-api-key', 'bad-key');
+      mockValidateKey.mockResolvedValue(false);
       renderDesktop();
-      expect(screen.getByTestId('todo-list')).toHaveAttribute('data-readonly', 'false');
+
+      await act(async () => {});
+      expect(screen.getByTestId('todo-list')).toHaveAttribute('data-readonly', 'true');
     });
 
-    it('switches to interactive mode after setting API key via terminal', async () => {
+    it('renders in interactive mode with a valid API key', async () => {
+      localStorage.setItem('kikos-api-key', 'valid-key');
+      mockValidateKey.mockResolvedValue(true);
+      renderDesktop();
+
+      await waitFor(() => {
+        expect(screen.getByTestId('todo-list')).toHaveAttribute('data-readonly', 'false');
+      });
+    });
+
+    it('switches to interactive mode after setting a valid API key via terminal', async () => {
       const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
       renderDesktop();
 
@@ -235,11 +257,15 @@ it('renders desktop icons with correct labels', () => {
 
       // Open terminal and simulate setting the key
       await user.keyboard('{Meta>}k{/Meta}');
-      localStorage.setItem('kikos-api-key', 'test-key');
+      localStorage.setItem('kikos-api-key', 'valid-key');
+      mockValidateKey.mockResolvedValue(true);
 
-      // Close terminal — triggers re-check
+      // Close terminal — triggers validation
       await user.click(screen.getByText('Close Terminal'));
-      expect(screen.getByTestId('todo-list')).toHaveAttribute('data-readonly', 'false');
+
+      await waitFor(() => {
+        expect(screen.getByTestId('todo-list')).toHaveAttribute('data-readonly', 'false');
+      });
     });
   });
 });
