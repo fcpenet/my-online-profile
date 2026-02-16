@@ -1,0 +1,432 @@
+/* Mac App Window */
+.appWindow {
+  max-width: 1000px;
+  width: 100%;
+  margin: 2rem auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+  animation: windowOpen 0.3s ease-out;
+}
+
+@keyframes windowOpen {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.windowHeader {
+  height: 38px;
+  background: linear-gradient(180deg, #3d3d3d 0%, #2d2d2d 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.windowButtons { display: flex; gap: 8px; }
+.windowButton {
+  width: 12px; height: 12px; border-radius: 50%;
+  border: none; cursor: pointer; transition: all 0.2s; display: block;
+}
+.closeButton { background: #ff5f57; }
+.closeButton:hover { background: #ff3b30; box-shadow: 0 0 8px rgba(255, 59, 48, 0.6); }
+.minimizeButton { background: #febc2e; }
+.minimizeButton:hover { background: #f5a623; }
+.maximizeButton { background: #28c840; }
+.maximizeButton:hover { background: #1db954; }
+.windowButtonsPlaceholder { width: 52px; }
+.windowTitle { color: rgba(255, 255, 255, 0.8); font-size: 0.85rem; font-weight: 500; }
+
+.windowContent {
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: #0f172a;
+}
+
+/* Resume */
+.resume {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  padding: 3rem 3rem 2.5rem;
+  text-align: center;
+  border-bottom: 1px solid #1e293b;
+}
+
+.name {
+  font-size: 2.75rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.5px;
+}
+
+.title {
+  font-size: 1.2rem;
+  color: #3b82f6;
+  margin: 0 0 1rem 0;
+  font-weight: 500;
+}
+
+.contactRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  flex-wrap: wrap;
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #3b82f6;
+  display: inline-block;
+}
+
+.contactLink {
+  color: #60a5fa;
+  text-decoration: none;
+}
+
+.contactLink:hover {
+  color: #93c5fd;
+}
+
+/* Sections */
+.section {
+  padding: 2rem 3rem;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0 0 1.5rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #1e293b;
+  position: relative;
+}
+
+.sectionTitle::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: #3b82f6;
+}
+
+/* Summary */
+.summary {
+  color: #94a3b8;
+  line-height: 1.8;
+  margin: 0;
+  padding: 0 3rem;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Skills Bar */
+.skillsBar {
+  display: flex;
+  gap: 2rem;
+  padding: 1.5rem 3rem;
+  background: #1e293b;
+  border-top: 1px solid #334155;
+  border-bottom: 1px solid #334155;
+  flex-wrap: wrap;
+}
+
+.skillCategory h3 {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 0.5rem 0;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.pills span {
+  background: #0f172a;
+  color: #60a5fa;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  border: 1px solid #1e3a5f;
+  transition: all 0.2s;
+}
+
+.pills span:hover {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+}
+
+.timelineItem {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.timelineItem:last-child {
+  margin-bottom: 0;
+}
+
+.timelineLine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.timelineLine::after {
+  content: "";
+  position: absolute;
+  top: 12px;
+  bottom: -2.5rem;
+  width: 2px;
+  background: #1e293b;
+}
+
+.timelineItem:last-child .timelineLine::after {
+  display: none;
+}
+
+.timelineDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 2px solid #0f172a;
+  box-shadow: 0 0 0 3px #1e3a5f;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.timelineContent {
+  flex: 1;
+  padding-bottom: 0.5rem;
+}
+
+.timelineDate {
+  font-size: 0.8rem;
+  color: #3b82f6;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  letter-spacing: 0.5px;
+}
+
+.timelineRole {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0 0 0.15rem 0;
+}
+
+.timelineCompany {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0 0 0.75rem 0;
+}
+
+.timelineContent ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  list-style: none;
+}
+
+.timelineContent li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+.timelineContent li::before {
+  content: "\25B8";
+  position: absolute;
+  left: -1.25rem;
+  color: #334155;
+}
+
+.timelineContent li:last-child {
+  margin-bottom: 0;
+}
+
+.timelineContent li strong {
+  color: #60a5fa;
+}
+
+/* Bottom Row */
+.bottomRow {
+  padding: 0 3rem 2rem;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2rem;
+}
+
+.bottomRow .section {
+  padding: 0;
+}
+
+.eduGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.eduCard {
+  background: #1e293b;
+  padding: 1.25rem;
+  border-radius: 8px;
+  border: 1px solid #334155;
+}
+
+.eduCard h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0 0 0.25rem 0;
+}
+
+.eduSchool {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0 0 0.25rem 0;
+}
+
+.eduDetail {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin: 0;
+  font-style: italic;
+}
+
+.additionalList p {
+  margin: 0 0 0.35rem 0;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+.additionalList strong {
+  color: #cbd5e1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .appWindow {
+    margin: 0;
+    border-radius: 0;
+    min-height: 100vh;
+  }
+
+  .windowContent {
+    max-height: calc(100vh - 38px);
+  }
+
+  .header {
+    padding: 2rem 1.5rem;
+  }
+
+  .name {
+    font-size: 2rem;
+  }
+
+  .summary {
+    padding: 0 1.5rem;
+  }
+
+  .skillsBar {
+    padding: 1.5rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .section {
+    padding: 1.5rem;
+  }
+
+  .bottomRow {
+    grid-template-columns: 1fr;
+    padding: 0 1.5rem 1.5rem;
+  }
+
+  .eduGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Print */
+@media print {
+  .appWindow {
+    box-shadow: none;
+    margin: 0;
+    max-width: 100%;
+    border-radius: 0;
+  }
+
+  .windowHeader {
+    display: none;
+  }
+
+  .resume {
+    background: white;
+    color: #1e293b;
+  }
+
+  .header {
+    background: white;
+    border-bottom: 2px solid #1e293b;
+  }
+
+  .name { color: #0f172a; }
+  .title { color: #3b82f6; }
+  .contactRow { color: #475569; }
+
+  .windowContent { background: white; }
+  .skillsBar { background: #f8fafc; border-color: #e2e8f0; }
+  .pills span { background: white; color: #3b82f6; border-color: #3b82f6; }
+  .skillCategory h3 { color: #475569; }
+
+  .sectionTitle { color: #0f172a; border-color: #e2e8f0; }
+  .timelineDot { background: #3b82f6; border-color: white; box-shadow: 0 0 0 2px #3b82f6; }
+  .timelineLine::after { background: #e2e8f0; }
+  .timelineRole { color: #0f172a; }
+  .timelineCompany { color: #64748b; }
+  .timelineContent li { color: #475569; }
+  .timelineContent li::before { color: #94a3b8; }
+  .timelineContent li strong { color: #1e3a8a; }
+
+  .summary { color: #475569; }
+  .eduCard { background: #f8fafc; border-color: #e2e8f0; }
+  .eduCard h3 { color: #0f172a; }
+  .additionalList p { color: #475569; }
+  .additionalList strong { color: #0f172a; }
+
+  .timelineItem { page-break-inside: avoid; }
+}
