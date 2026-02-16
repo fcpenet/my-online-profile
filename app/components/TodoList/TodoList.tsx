@@ -92,6 +92,21 @@ export default function TodoList({ readOnly = false }: TodoListProps) {
     }
   };
 
+  if (loading) {
+    return <SpinningWheel />;
+  }
+
+  if (error && items.length === 0) {
+    return (
+      <ErrorDialog
+        isVisible
+        onClose={() => setError(null)}
+        title="Error"
+        message={error}
+      />
+    );
+  }
+
   return (
     <div className={styles.todoList}>
       <ErrorDialog
@@ -109,7 +124,6 @@ export default function TodoList({ readOnly = false }: TodoListProps) {
         <div className={styles.todoTitle}>To Do</div>
       </div>
       <div className={styles.todoContent}>
-        {loading && <SpinningWheel />}
         {items.map(item => (
           <div key={item.id} className={styles.todoItem}>
             <input

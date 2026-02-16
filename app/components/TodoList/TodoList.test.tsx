@@ -47,19 +47,21 @@ describe('TodoList', () => {
     jest.clearAllMocks();
   });
 
-  it('shows loading state then renders items from the service', async () => {
+  it('shows spinning wheel without todo window while loading, then renders items', async () => {
     mockGetAll.mockResolvedValue(fakeItems);
     render(<TodoList />);
     expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(screen.queryByText('To Do')).not.toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText('Setup vercel account for backend!')).toBeInTheDocument();
     });
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.getByText('To Do')).toBeInTheDocument();
     expect(mockGetAll).toHaveBeenCalledTimes(1);
   });
 
-  it('shows error dialog when fetch fails', async () => {
+  it('shows error dialog without todo window when fetch fails', async () => {
     mockGetAll.mockRejectedValue(new Error('Network error'));
     render(<TodoList />);
 
@@ -67,6 +69,7 @@ describe('TodoList', () => {
       expect(screen.getByTestId('error-dialog')).toBeInTheDocument();
       expect(screen.getByText('Failed to load todos')).toBeInTheDocument();
     });
+    expect(screen.queryByText('To Do')).not.toBeInTheDocument();
   });
 
   it('renders the window header with title', async () => {
