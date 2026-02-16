@@ -21,6 +21,8 @@ export default function TodoList({ readOnly = false }: TodoListProps) {
   const [newTitle, setNewTitle] = useState('');
   const [addError, setAddError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [adding, setAdding] = useState(false);
 
   useEffect(() => {
     todoService.getAll()
@@ -76,12 +78,15 @@ export default function TodoList({ readOnly = false }: TodoListProps) {
   };
 
   const deleteItem = async (id: number) => {
+    setDeletingId(id);
     try {
       await todoService.delete(id);
       setItems(prev => prev.filter(item => item.id !== id));
       setSavedItems(prev => prev.filter(item => item.id !== id));
     } catch {
       setError('Failed to delete todo');
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -92,6 +97,7 @@ export default function TodoList({ readOnly = false }: TodoListProps) {
       return;
     }
     setAddError(null);
+    setAdding(true);
     try {
       const created = await todoService.add(title);
       setItems(prev => [...prev, created]);
@@ -99,6 +105,8 @@ export default function TodoList({ readOnly = false }: TodoListProps) {
       setNewTitle('');
     } catch {
       setError('Failed to add todo');
+    } finally {
+      setAdding(false);
     }
   };
 
@@ -151,8 +159,13 @@ export default function TodoList({ readOnly = false }: TodoListProps) {
                 className={styles.deleteButton}
                 onClick={() => deleteItem(item.id)}
                 aria-label={`Delete ${item.title}`}
+                disabled={deletingId === item.id}
               >
-                &times;
+                {deletingId === item.id ? <SpinningWheel size={14} /> : (
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M2 4h12M5.333 4V2.667a1.333 1.333 0 011.334-1.334h2.666a1.333 1.333 0 011.334 1.334V4M12.667 4v9.333a1.333 1.333 0 01-1.334 1.334H4.667a1.333 1.333 0 01-1.334-1.334V4h9.334z" />
+                  </svg>
+                )}
               </button>
             )}
           </div>
@@ -177,7 +190,9 @@ export default function TodoList({ readOnly = false }: TodoListProps) {
                 if (e.key === 'Enter') addItem();
               }}
             />
-            <button className={styles.addButton} onClick={addItem}>Add</button>
+            <button className={styles.addButton} onClick={addItem} disabled={adding}>
+              {adding ? <SpinningWheel size={14} /> : 'Add'}
+            </button>
             {addError && <div className={styles.addError}>{addError}</div>}
           </div>
         )}
