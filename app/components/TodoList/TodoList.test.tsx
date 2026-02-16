@@ -15,6 +15,12 @@ jest.mock('../../services/TodoService/TodoService', () => ({
   })),
 }));
 
+jest.mock('../SpinningWheel/SpinningWheel', () => {
+  return function MockSpinningWheel() {
+    return <div role="status">Loading</div>;
+  };
+});
+
 jest.mock('../ErrorDialog/ErrorDialog', () => {
   return function MockErrorDialog({ isVisible, onClose, message }: { isVisible: boolean; onClose: () => void; message: string }) {
     if (!isVisible) return null;
@@ -32,7 +38,7 @@ function renderAndWaitForLoad() {
   mockGetAll.mockResolvedValue(fakeItems);
   render(<TodoList />);
   return waitFor(() => {
-    expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 }
 
@@ -44,12 +50,12 @@ describe('TodoList', () => {
   it('shows loading state then renders items from the service', async () => {
     mockGetAll.mockResolvedValue(fakeItems);
     render(<TodoList />);
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByRole('status')).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText('Setup vercel account for backend!')).toBeInTheDocument();
     });
-    expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
     expect(mockGetAll).toHaveBeenCalledTimes(1);
   });
 
@@ -220,7 +226,7 @@ describe('TodoList', () => {
       mockGetAll.mockResolvedValue(fakeItems);
       render(<TodoList readOnly />);
       await waitFor(() => {
-        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+        expect(screen.queryByRole('status')).not.toBeInTheDocument();
       });
       expect(screen.queryByRole('button', { name: 'Save' })).not.toBeInTheDocument();
     });
@@ -237,7 +243,7 @@ describe('TodoList', () => {
       mockGetAll.mockResolvedValue(fakeItems);
       render(<TodoList readOnly />);
       await waitFor(() => {
-        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+        expect(screen.queryByRole('status')).not.toBeInTheDocument();
       });
       expect(screen.queryByPlaceholderText('Add a new todo...')).not.toBeInTheDocument();
       expect(screen.queryByRole('button', { name: 'Add' })).not.toBeInTheDocument();
@@ -332,7 +338,7 @@ describe('TodoList', () => {
       mockGetAll.mockResolvedValue(fakeItems);
       render(<TodoList readOnly />);
       return waitFor(() => {
-        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+        expect(screen.queryByRole('status')).not.toBeInTheDocument();
       });
     }
 

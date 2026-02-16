@@ -5,6 +5,7 @@ import styles from './TodoList.module.css';
 import { TodoService } from '../../services/TodoService/TodoService';
 import type { TodoItem } from '../../services/TodoService/types';
 import ErrorDialog from '../ErrorDialog/ErrorDialog';
+import SpinningWheel from '../SpinningWheel/SpinningWheel';
 
 const todoService = new TodoService();
 
@@ -108,7 +109,7 @@ export default function TodoList({ readOnly = false }: TodoListProps) {
         <div className={styles.todoTitle}>To Do</div>
       </div>
       <div className={styles.todoContent}>
-        {loading && <div className={styles.todoText}>Loading...</div>}
+        {loading && <SpinningWheel />}
         {items.map(item => (
           <div key={item.id} className={styles.todoItem}>
             <input
@@ -125,7 +126,7 @@ export default function TodoList({ readOnly = false }: TodoListProps) {
         ))}
         {hasChanges && !readOnly && (
           <button className={styles.saveButton} onClick={saveChanges} disabled={saving}>
-            {saving ? 'Saving...' : 'Save'}
+            {saving ? <><SpinningWheel size={16} /> Saving...</> : 'Save'}
           </button>
         )}
         {!readOnly && (
