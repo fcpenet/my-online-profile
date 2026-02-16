@@ -44,13 +44,21 @@ export default function Terminal({ isVisible, onClose }: TerminalProps) {
 
     if (trimmed === 'help') {
       newOutput.push({
-        text: 'Available commands:\n  set-api-key <key>  Save an API key\n  clear               Clear terminal\n  help                Show this help',
+        text: 'Available commands:\n  set-api-key <key>  Save an API key\n  get-api-key         Show current API key\n  clear               Clear terminal\n  help                Show this help',
         type: 'output',
       });
     } else if (trimmed === 'clear') {
       setOutput([]);
       setInput('');
       return;
+    } else if (trimmed === 'get-api-key') {
+      const key = localStorage.getItem('kikos-api-key');
+      if (!key) {
+        newOutput.push({ text: 'No API key set. Use set-api-key <key> to save one.', type: 'error' });
+      } else {
+        const masked = key.length <= 4 ? '****' : key.slice(0, 4) + '*'.repeat(key.length - 4);
+        newOutput.push({ text: `Current API key: ${masked}`, type: 'output' });
+      }
     } else if (trimmed.startsWith('set-api-key')) {
       const key = trimmed.slice('set-api-key'.length).trim();
       if (!key) {

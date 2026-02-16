@@ -86,6 +86,25 @@ describe('Terminal', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
+  it('shows masked API key when one is set', async () => {
+    localStorage.setItem('kikos-api-key', 'mySecretKey123');
+    const user = userEvent.setup();
+    render(<Terminal isVisible={true} onClose={onClose} />);
+
+    await user.type(screen.getByRole('textbox'), 'get-api-key{Enter}');
+
+    expect(screen.getByText(/Current API key: mySe\*\*\*\*\*\*\*\*\*\*/)).toBeInTheDocument();
+  });
+
+  it('shows error when no API key is set and get-api-key is used', async () => {
+    const user = userEvent.setup();
+    render(<Terminal isVisible={true} onClose={onClose} />);
+
+    await user.type(screen.getByRole('textbox'), 'get-api-key{Enter}');
+
+    expect(screen.getByText(/No API key set/)).toBeInTheDocument();
+  });
+
   it('clears the input after submitting a command', async () => {
     const user = userEvent.setup();
     render(<Terminal isVisible={true} onClose={onClose} />);
