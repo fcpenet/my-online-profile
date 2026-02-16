@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   icons: {
     icon: '/kikOS_favicon.svg',
   },
-  title: 'Francis Penetrante - Senior Software Engineer',
+  title: 'kikOs',
   description: 'Software Engineer with 13+ years of experience specializing in Full Stack Development, ReactJS, NodeJS, Python, and Cloud Technologies (GCP, AWS, Azure)',
   openGraph: {
     title: 'kikOS - Francis Penetrante Portfolio',
