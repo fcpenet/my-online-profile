@@ -249,6 +249,25 @@ it('renders desktop icons with correct labels', () => {
       });
     });
 
+    it('renders the mobile todo toggle button', () => {
+      renderDesktop();
+      expect(screen.getByRole('button', { name: 'Toggle Todo List' })).toBeInTheDocument();
+    });
+
+    it('toggle button shows ☑ by default and ✕ when active', async () => {
+      const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+      renderDesktop();
+
+      const toggle = screen.getByRole('button', { name: 'Toggle Todo List' });
+      expect(toggle).toHaveTextContent('☑');
+
+      await user.click(toggle);
+      expect(toggle).toHaveTextContent('✕');
+
+      await user.click(toggle);
+      expect(toggle).toHaveTextContent('☑');
+    });
+
     it('switches to interactive mode after setting a valid API key via terminal', async () => {
       const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
       renderDesktop();

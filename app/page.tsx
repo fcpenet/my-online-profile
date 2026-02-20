@@ -55,6 +55,7 @@ export default function Desktop() {
   });
   const [showTerminal, setShowTerminal] = useState<boolean>(false);
   const [isKeyValid, setIsKeyValid] = useState<boolean>(false);
+  const [showTodoMobile, setShowTodoMobile] = useState<boolean>(false);
 
   const bootSequence = [
     'kikOS v4.2.0',
@@ -213,7 +214,18 @@ export default function Desktop() {
       </div>
 
       {/* To-Do List — read-only without API key */}
-      <TodoList readOnly={!isKeyValid} />
+      <div className={`${styles.todoWrapper} ${showTodoMobile ? styles.todoWrapperVisible : ''}`}>
+        <TodoList readOnly={!isKeyValid} />
+      </div>
+
+      {/* Mobile Todo Toggle */}
+      <button
+        className={styles.todoToggle}
+        onClick={() => setShowTodoMobile(prev => !prev)}
+        aria-label="Toggle Todo List"
+      >
+        {showTodoMobile ? '✕' : '☑'}
+      </button>
 
       {/* Desktop Icons */}
       <div className={styles.iconsContainer}>

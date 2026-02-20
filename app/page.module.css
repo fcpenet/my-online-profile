@@ -389,7 +389,63 @@
 
 
 /* Responsive */
+/* Mobile Todo Toggle Button */
+.todoToggle {
+  display: none;
+}
+
+.todoWrapper {
+  /* no special styles on desktop — TodoList positions itself */
+}
+
 @media (max-width: 768px) {
+  .todoWrapper {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  .todoWrapperVisible {
+    display: flex;
+  }
+
+  .todoToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 201;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    color: white;
+    font-size: 1.4rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .todoToggle:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+  }
+}
+
+@media (max-width: 768px) {
+  .dock {
+    display: none;
+  }
+
   .desktop {
     overflow: auto;
     min-height: 100vh;
