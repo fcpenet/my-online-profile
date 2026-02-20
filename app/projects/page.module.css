@@ -342,6 +342,26 @@
   gap: 1rem;
 }
 
+.cardDataEngineering {
+  border-left: 4px solid #f59e0b;
+  padding-left: calc(1.5rem - 4px);
+}
+
+.cardFrontend {
+  border-left: 4px solid #3b82f6;
+  padding-left: calc(1.5rem - 4px);
+}
+
+.cardBackend {
+  border-left: 4px solid #8b5cf6;
+  padding-left: calc(1.5rem - 4px);
+}
+
+.cardDevOps {
+  border-left: 4px solid #10b981;
+  padding-left: calc(1.5rem - 4px);
+}
+
 .projectCard:hover {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   transform: translateY(-4px);

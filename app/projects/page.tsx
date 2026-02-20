@@ -75,6 +75,13 @@ export default function ProjectsPage() {
 
   const categories = ['all', 'Data Engineering', 'Frontend', 'Backend', 'DevOps'];
 
+  const categoryClass: Record<string, string> = {
+    'Data Engineering': styles.cardDataEngineering,
+    'Frontend': styles.cardFrontend,
+    'Backend': styles.cardBackend,
+    'DevOps': styles.cardDevOps,
+  };
+
   const filteredProjects = selectedCategory === 'all'
     ? projects
     : projects.filter(p => p.category === selectedCategory);
@@ -176,7 +183,7 @@ export default function ProjectsPage() {
               {/* Projects Grid */}
               <div className={styles.projectsGrid}>
                 {filteredProjects.map((project, index) => (
-                  <div key={index} className={styles.projectCard}>
+                  <div key={index} className={`${styles.projectCard} ${categoryClass[project.category] ?? ''}`}>
                     <div className={styles.projectHeader}>
                       <h3 className={styles.projectTitle}>{project.title}</h3>
                       <span className={styles.categoryBadge}>{project.category}</span>
