@@ -111,6 +111,13 @@ export default function ProjectsPage() {
               <span className={styles.tabFavicon}>🍳</span>
               <span>Cocina Express</span>
             </div>
+            <div
+              className={`${styles.tab} ${activeTab === 'project-tracker' ? styles.activeTab : styles.inactiveTab}`}
+              onClick={() => setActiveTab('project-tracker')}
+            >
+              <span className={styles.tabFavicon}>📋</span>
+              <span>Project Tracker</span>
+            </div>
             <div className={styles.newTab}>+</div>
           </div>
         </div>
@@ -125,7 +132,13 @@ export default function ProjectsPage() {
           <div className={styles.urlBar}>
             <span className={styles.secure}>🔒</span>
             <span className={styles.url}>
-              {activeTab === 'summary' ? 'kikopenetrante.com/projects' : activeTab === 'pili-pinas' ? 'pili-pinas.com' : 'fcpenet.github.io/cocina-express'}
+              {activeTab === 'summary'
+                ? 'kikopenetrante.com/projects'
+                : activeTab === 'pili-pinas'
+                ? 'pili-pinas.com'
+                : activeTab === 'project-tracker'
+                ? 'project-tracker-five-plum.vercel.app/login'
+                : 'fcpenet.github.io/cocina-express'}
             </span>
           </div>
           <div className={styles.browserActions}>
@@ -216,12 +229,16 @@ export default function ProjectsPage() {
                 sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
                 loading="lazy"
               />
-              <div className={styles.iframeError}>
-                <p>⚠️ This website cannot be embedded due to security restrictions.</p>
-                <a href="https://pili-pinas.com" target="_blank" rel="noopener noreferrer" className={styles.openLink}>
-                  Open pili-pinas.com in new tab →
-                </a>
-              </div>
+            </div>
+          ) : activeTab === 'project-tracker' ? (
+            <div className={styles.iframeContainer}>
+              <iframe
+                src="https://project-tracker-five-plum.vercel.app/login"
+                className={styles.iframe}
+                title="Project Tracker"
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                loading="lazy"
+              />
             </div>
           ) : (
             <div className={styles.iframeContainer}>

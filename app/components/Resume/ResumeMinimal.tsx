@@ -12,7 +12,7 @@ export default function ResumeMinimal() {
           <span className={`${styles.windowButton} ${styles.minimizeButton}`}></span>
           <span className={`${styles.windowButton} ${styles.maximizeButton}`}></span>
         </div>
-        <span className={styles.windowTitle}>Profile.app</span>
+        <span className={styles.windowTitle}>Profile</span>
         <div className={styles.windowButtonsPlaceholder}></div>
       </div>
 
